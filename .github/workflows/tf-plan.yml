@@ -37,7 +37,7 @@ jobs:
         run: |
           # Setup the credentials in the workspace because everything in terraform is
           # driven off profiles
-          apt-get install -y python-setuptools
+          pip3 install --upgrade pip setuptools
           pip3 install ansible
           # printf "${{ secrets.SERVICEACCOUNT }}" # > ./creds.json
       - name: Terraform Format
