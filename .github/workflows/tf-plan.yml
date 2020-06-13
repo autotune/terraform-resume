@@ -54,7 +54,7 @@ jobs:
           args: -backend-config backend/backend.tfvars
         env:
           TF_WORKSPACE: ${{ env.WORKSPACE }}
-          GOOGLE_APPLICATION_CREDENTIALS: ./creds.json
+          GOOGLE_APPLICATION_CREDENTIALS: './creds.json'
           GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
 
       - name: Terraform Validate
@@ -75,7 +75,7 @@ jobs:
           tf_actions_subcommand: plan
           args: -var-file backend/backend.tfvars -var-file ${{ steps.tfvars.outputs.tfvars_file }}
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ./creds.json
+          GOOGLE_APPLICATION_CREDENTIALS: './creds.json'
           TF_WORKSPACE: ${{ env.WORKSPACE }}
           GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
 
