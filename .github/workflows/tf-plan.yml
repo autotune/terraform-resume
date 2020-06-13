@@ -76,7 +76,7 @@ jobs:
         env:
           TF_WORKSPACE: ${{ env.WORKSPACE }}
           GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
-          GOOGLE_APPLICATION_CREDENTIALS: "./creds.json"
+          GOOGLE_APPLICATION_CREDENTIALS: "serviceaccount.json"
 
       - name: Upload Plan Artifact
         uses: actions/upload-artifact@v1
