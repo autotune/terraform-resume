@@ -37,7 +37,7 @@ jobs:
         run: |
           # Setup the credentials in the workspace because everything in terraform is
           # driven off profiles
-          # printf "${{ secrets.SERVICEACCOUNT }}" > ./creds.json
+          printf "${{ secrets.SERVICEACCOUNT }}" # > ./creds.json
       - name: Terraform Format
         uses: autotune/terraform-github-actions@master
         with:
