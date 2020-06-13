@@ -51,7 +51,7 @@ jobs:
         with:
           tf_actions_version: ${{ env.TF_VERSION }}
           tf_actions_subcommand: init
-          args: -backend-config backend/backend.tfvars
+          args: --backend-config=backend/backend.tf -backend-config backend/backend.tfvars
         env:
           TF_WORKSPACE: ${{ env.WORKSPACE }}
           GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
