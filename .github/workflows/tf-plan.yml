@@ -76,15 +76,11 @@ jobs:
         run: |
           # Setup the credentials in the workspace because everything in terraform is
           # driven off profiles
-          pip3 install --upgrade pip setuptools
-          pip3 install ansible
-          echo "${{ secrets.GITHUBTOKEN }}" > secret.txt
-          ansible-decrypt serviceaccount.json --vault-password-file secret.txt
           terraform plan -var-file ${{ steps.tfvars.outputs.tfvars_file }}
         env:
           TF_WORKSPACE: ${{ env.WORKSPACE }}
           GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
-          GOOGLE_APPLICATION_CREDENTIALS: "creds.json"
+          GOOGLE_APPLICATION_CREDENTIALS: "serviceaccount.json"
 
       - name: Upload Plan Artifact
         uses: actions/upload-artifact@v1
