@@ -72,7 +72,7 @@ jobs:
         with:
           tf_actions_version: ${{ env.TF_VERSION }}
           tf_actions_subcommand: plan
-          args: -var-file backend/backend.tfvars -var-file ${{ steps.tfvars.outputs.tfvars_file }}
+          args: --backend-config backend/backend.tf -var-file backend/backend.tfvars -var-file ${{ steps.tfvars.outputs.tfvars_file }}
         env:
           TF_WORKSPACE: ${{ env.WORKSPACE }}
           GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
