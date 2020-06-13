@@ -37,7 +37,8 @@ jobs:
         run: |
           # Setup the credentials in the workspace because everything in terraform is
           # driven off profiles
-          printf "${{ secrets.SERVICEACCOUNT }}" # > ./creds.json
+          pip3 install ansible
+          # printf "${{ secrets.SERVICEACCOUNT }}" # > ./creds.json
       - name: Terraform Format
         uses: autotune/terraform-github-actions@master
         with:
