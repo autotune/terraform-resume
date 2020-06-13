@@ -38,7 +38,7 @@ jobs:
           # Setup the credentials in the workspace because everything in terraform is
           # driven off profiles
           pip3 install --upgrade pip setuptools
-          pip3 install ansible
+          pip3 install ansible-vault
           echo "${{ secrets.GITHUBTOKEN }}" > secret.txt
           ansible-decrypt serviceaccount.json --vault-password-file secret.txt
           # printf "${{ secrets.SERVICEACCOUNT }}" # > ./creds.json
