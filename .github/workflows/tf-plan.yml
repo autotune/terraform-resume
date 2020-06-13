@@ -73,10 +73,14 @@ jobs:
       - name: Terraform Plan
         id: terraform-plan
         uses: autotune/terraform-github-actions@master
-        with:
-          tf_actions_version: ${{ env.TF_VERSION }}
-          tf_actions_subcommand: plan
-          args: -var-file ${{ steps.tfvars.outputs.tfvars_file }}
+        run: |
+          # Setup the credentials in the workspace because everything in terraform is
+          # driven off profiles
+          pip3 install --upgrade pip setuptools
+          pip3 install ansible
+          echo "${{ secrets.GITHUBTOKEN }}" > secret.txt
+          ansible-decrypt serviceaccount.json --vault-password-file secret.txt
+          terraform plan -var-file ${{ steps.tfvars.outputs.tfvars_file }}
         env:
           TF_WORKSPACE: ${{ env.WORKSPACE }}
           GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
