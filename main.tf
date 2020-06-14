@@ -8,7 +8,7 @@ module "vpc" {
 
   subnets = [
     {
-      subnet_name   = "subnet-01"
+      subnet_name   = "gke"
       subnet_ip     = "10.10.10.0/24"
       subnet_region = "us-west1"
     },
@@ -34,12 +34,17 @@ module "vpc" {
   secondary_ranges = {
     subnet-01 = [
       {
-        range_name    = "subnet-01-secondary-01"
+        range_name    = "gke-pods-01"
         ip_cidr_range = "192.168.64.0/24"
       },
     ]
 
-    subnet-02 = []
+    subnet-02 = [
+      {
+        range_name    = "gke-services-01"
+        ip_cidr_range = "192.168.65.0/24"
+      },
+    ]
   }
 
   routes = [
@@ -60,9 +65,9 @@ module "gke" {
   region                     = "us-west1"
   zones                      = ["us-west1-a", "us-west1-b", "us-west1-c"]
   network                    = "${module.vpc.network_name}"
-  subnetwork                 = "${module.vpc.subnets_names[0]}-secondary-01"
-  ip_range_pods              = "${module.vpc.subnets_names[0]}-secondary-01"
-  ip_range_services          = "${module.vpc.subnets_names[0]}"
+  subnetwork                 = "${module.vpc.subnets_names[0]}"
+  ip_range_pods              = "gke-pods-01"
+  ip_range_services          = "gke-services-01"
   http_load_balancing        = true
   horizontal_pod_autoscaling = true
   network_policy             = true
