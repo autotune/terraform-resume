@@ -98,5 +98,5 @@ jobs:
 
       - name: Get kubeconfig 
         run: |
-                gcloud container clusters get-credentials ${{ secrets.GCP_PROJECT }} --region=us-west1 
+                gcloud container clusters get-credentials resume --region=us-west1 
 
