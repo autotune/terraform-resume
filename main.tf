@@ -84,7 +84,7 @@ module "gke" {
       auto_upgrade       = true
       service_account    = "terraform@badamscka.iam.gserviceaccount.com"
       preemptible        = false
-      initial_node_count = 80
+      initial_node_count = 1
     },
   ]
 
