@@ -60,9 +60,9 @@ module "gke" {
   region                     = "us-west1"
   zones                      = ["us-west1-a", "us-west1-b", "us-west1-c"]
   network                    = "${module.vpc.network_name}"
-  subnetwork                 = "us-west1-01"
-  ip_range_pods              = "us-west1-01-gke-01-pods"
-  ip_range_services          = "us-west1-01-gke-01-services"
+  subnetwork                 = "${module.vpc.subnets_names[0]}"
+  ip_range_pods              = "${module.vpc.subnets_names[0]}-gke-01-pods"
+  ip_range_services          = "${module.vpc.subnets_names[0]}-gke-01-services"
   http_load_balancing        = false
   horizontal_pod_autoscaling = true
   network_policy             = true
