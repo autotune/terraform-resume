@@ -36,6 +36,8 @@ jobs:
           echo "${{ secrets.SERVICEACCOUNT }}" > secret.txt
           ansible-vault decrypt serviceaccount.json --vault-password-file secret.txt
           gcloud auth activate-service-account terraform@badamscka.iam.gserviceaccount.com --key-file=serviceaccount.json --project=${{ secrets.GCP_PROJECT }}
+          sed "s/USER/${{ secrets.GCP_USER }}/g" -i kubernetes/argocd.yaml
+          sed "s/PROJECT/${{ secrets.GCP_PROJECT }}/g" -i kubernetes/argocd.yaml
 
       - name: Terraform Format
         uses: autotune/terraform-github-actions@master
