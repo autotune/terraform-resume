@@ -9,7 +9,7 @@ jobs:
   terraform:
     strategy:
       matrix:
-        workspace: [st-test-results-bucket_us-east-1]
+        workspace: [default]
 
     name: ${{ matrix.workspace }}
     runs-on: ubuntu-latest
