@@ -95,6 +95,7 @@ jobs:
           TF_cf_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           TF_project: ${{ secrets.GCP_PROJECT }}
 
-      - name: Cleanup GCP Credentials
+      - name: Get kubeconfig 
         run: |
-          rm -rf ./serviceaccount.json
+                gcloud container clusters get-credentials ${{ secrets.GCP_PROJECT }} 
+
