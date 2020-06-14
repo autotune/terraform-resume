@@ -1,4 +1,4 @@
-name: terraform-plan
+name: terraform
 
 on: pull_request
 
@@ -6,7 +6,7 @@ env:
   TF_VERSION: 0.12.26
 
 jobs:
-  terraform-plan:
+  terraform:
     strategy:
       matrix:
         workspace: [st-test-results-bucket_us-east-1]
@@ -71,7 +71,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
 
       - name: Terraform Plan
-        id: terraform-plan
+        id: terraform
         uses: autotune/terraform-github-actions@master
         with:
           tf_actions_version: ${{ env.TF_VERSION }}
@@ -82,10 +82,22 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOOGLE_APPLICATION_CREDENTIALS: "serviceaccount.json"
 
+      - name: Terraform Apply
+        id: terraform
+        uses: autotune/terraform-github-actions@master
+        with:
+          tf_actions_version: ${{ env.TF_VERSION }}
+          tf_actions_subcommand: apply
+          args: -var-file backend/backend.tfvars -var-file ${{ steps.tfvars.outputs.tfvars_file }}
+        env:
+          TF_WORKSPACE: ${{ env.WORKSPACE }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GOOGLE_APPLICATION_CREDENTIALS: "serviceaccount.json"
+
       - name: Upload Plan Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: terraform-plan-${{ env.WORKSPACE }}
+          name: terraform-${{ env.WORKSPACE }}
           path: ${{ steps.terraform-plan.outputs.tf_actions_plan_output_file }}
 
       - name: Cleanup GCP Credentials
