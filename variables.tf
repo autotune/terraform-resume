@@ -12,13 +12,12 @@ variable "project" {
 variable "cf_email" {
   description = "CloudFlare Email Address"
   type        = string
-  default     = "${{ secrets.CLOUDFLARE_EMAIL }}"
 }
 
 variable "cf_api_key" {
   description = "CloudFlare Email Address"
   type        = string
-  default     = "${{ secrets.CLOUDFLARE_API_TOKEN }}"
+  default     = ""
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
