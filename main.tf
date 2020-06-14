@@ -1,3 +1,10 @@
+provider "cloudflare" {
+  version = "~> 2.0"
+  email   = "${var.cloudflare_email}"
+  api_key = "${var.cloudflare_api_key}"
+}
+
+
 module "vpc" {
   source  = "terraform-google-modules/network/google"
   version = "~> 2.3"
@@ -120,3 +127,10 @@ module "gke" {
     ]
   }
 }
+
+provider "cloudflare" {
+  version = "~> 2.0"
+  email   = "${var.cloudflare_email}"
+  api_key = "${var.cloudflare_api_key}"
+}
+
