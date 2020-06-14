@@ -9,7 +9,7 @@ module "vpc" {
   subnets = [
     {
       subnet_name   = "gke"
-      subnet_ip     = "10.10.10.0/24"
+      subnet_ip     = "10.0.0.0/24"
       subnet_region = "us-west1"
     },
     {
