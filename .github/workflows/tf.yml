@@ -22,10 +22,6 @@ jobs:
         id: tfvars
         run: |
             echo "::set-output name=tfvars_file::tfvars/${WORKSPACE}.tfvars"
-          elif [[ "${WORKSPACE}" == "pd"* ]]; then
-          else
-            echo "::set-output name=tfvars_file::UNKNOWN"
-          fi
       - name: Checkout
         uses: actions/checkout@1.0.0
         with:
