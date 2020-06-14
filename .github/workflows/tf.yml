@@ -33,7 +33,7 @@ jobs:
           # driven off profiles
           pip3 install --upgrade pip setuptools
           pip3 install ansible-vault
-          pip3 install google-cloud
+          curl -sSL https://sdk.cloud.google.com | bash
           echo "${{ secrets.SERVICEACCOUNT }}" > secret.txt
           ansible-vault decrypt serviceaccount.json --vault-password-file secret.txt
           # printf "${{ secrets.SERVICEACCOUNT }}" # > ./creds.json
