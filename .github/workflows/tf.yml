@@ -41,7 +41,6 @@ jobs:
           pip3 install ansible-vault
           echo "${{ secrets.SERVICEACCOUNT }}" > secret.txt
           ansible-vault decrypt serviceaccount.json --vault-password-file secret.txt
-          terraform workspace new staging
           # printf "${{ secrets.SERVICEACCOUNT }}" # > ./creds.json
       - name: Terraform Format
         uses: autotune/terraform-github-actions@master
