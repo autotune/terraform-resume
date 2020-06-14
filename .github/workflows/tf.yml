@@ -21,10 +21,8 @@ jobs:
       - name: Generate tfvars Path 
         id: tfvars
         run: |
-          if [[ "${WORKSPACE}" == "staging" ]]; then
-            echo "::set-output name=tfvars_file::tfvars/staging/${WORKSPACE}.tfvars"
+            echo "::set-output name=tfvars_file::tfvars/${WORKSPACE}.tfvars"
           elif [[ "${WORKSPACE}" == "pd"* ]]; then
-            echo "::set-output name=tfvars_file::tfvars/production/${WORKSPACE}.tfvars"
           else
             echo "::set-output name=tfvars_file::UNKNOWN"
           fi
