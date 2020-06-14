@@ -58,7 +58,7 @@ module "gke" {
   project_id                 = "badamscka"
   name                       = "resume"
   region                     = "us-west1"
-  zones                      = ["us-us-west1-a", "us-west1-b", "us-west1-c"]
+  zones                      = ["us-west1-a", "us-west1-b", "us-west1-c"]
   network                    = "${module.vpc.network_name}"
   subnetwork                 = "us-central1-01"
   ip_range_pods              = "us-central1-01-gke-01-pods"
