@@ -75,6 +75,8 @@ jobs:
           TF_WORKSPACE: ${{ env.WORKSPACE }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOOGLE_APPLICATION_CREDENTIALS: "serviceaccount.json"
+          cf_email: ${{ secrets.CLOUDFLARE_EMAIL }}
+          cf_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
       - name: Terraform Apply
         id: terraform-apply
@@ -87,13 +89,9 @@ jobs:
           TF_WORKSPACE: ${{ env.WORKSPACE }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOOGLE_APPLICATION_CREDENTIALS: "serviceaccount.json"
-
-      - name: Upload Plan Artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: terraform-${{ env.WORKSPACE }}
-          path: ${{ steps.terraform-plan.outputs.tf_actions_plan_output_file }}
+          cf_email: ${{ secrets.CLOUDFLARE_EMAIL }}
+          cf_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
       - name: Cleanup GCP Credentials
         run: |
-          rm -rf ./creds.json
+          rm -rf ./serviceaccount.json
