@@ -75,8 +75,8 @@ jobs:
           TF_WORKSPACE: ${{ env.WORKSPACE }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOOGLE_APPLICATION_CREDENTIALS: "serviceaccount.json"
-          cf_email: ${{ secrets.CLOUDFLARE_EMAIL }}
-          cf_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_cf_email: ${{ secrets.CLOUDFLARE_EMAIL }}
+          TF_cf_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
       - name: Terraform Apply
         id: terraform-apply

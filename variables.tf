@@ -12,6 +12,7 @@ variable "project" {
 variable "cf_email" {
   description = "CloudFlare Email Address"
   type        = string
+  default     = ""
 }
 
 variable "cf_api_key" {
