@@ -3,7 +3,7 @@ name: terraform-plan
 on: pull_request
 
 env:
-  TF_VERSION: 0.12.20
+  TF_VERSION: 0.12.26
 
 jobs:
   terraform-plan:
