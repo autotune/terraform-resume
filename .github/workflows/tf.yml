@@ -71,7 +71,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
 
       - name: Terraform Plan
-        id: terraform
+        id: terraform-plan
         uses: autotune/terraform-github-actions@master
         with:
           tf_actions_version: ${{ env.TF_VERSION }}
@@ -83,7 +83,7 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: "serviceaccount.json"
 
       - name: Terraform Apply
-        id: terraform
+        id: terraform-apply
         uses: autotune/terraform-github-actions@master
         with:
           tf_actions_version: ${{ env.TF_VERSION }}
