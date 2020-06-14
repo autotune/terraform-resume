@@ -9,6 +9,18 @@ variable "project" {
   default     = "badamscka"
 }
 
+variable "cf_email" {
+  description = "CloudFlare Email Address"
+  type        = string
+  default     = "${{ secrets.CLOUDFLARE_EMAIL }}"
+}
+
+variable "cf_api_key" {
+  description = "CloudFlare Email Address"
+  type        = string
+  default     = "${{ secrets.CLOUDFLARE_API_TOKEN }}"
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # OPTIONAL PARAMETERS
 # These parameters have reasonable defaults.
