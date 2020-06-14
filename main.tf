@@ -35,12 +35,12 @@ module "vpc" {
     gke = [
       {
         range_name    = "gke-pods-01"
-        ip_cidr_range = "192.168.64.0/24"
+        ip_cidr_range = "10.44.0.0/14"
       },
 
       {
         range_name    = "gke-services-01"
-        ip_cidr_range = "192.168.65.0/24"
+        ip_cidr_range = "10.0.16.0/20"
       },
     ]
   }
