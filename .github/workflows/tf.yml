@@ -98,6 +98,5 @@ jobs:
 
       - name: Get kubeconfig 
         run: |
-                gcloud auth activate-service-account terraform@badamscka.iam.gserviceaccount.com --key-file=serviceaccount.json --project=${{ secrets.GCP_PROJECT }}
-                gcloud container clusters get-credentials ${{ secrets.GCP_PROJECT }} 
+                gcloud container clusters get-credentials ${{ secrets.GCP_PROJECT }} --region=us-west1 
 
