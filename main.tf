@@ -24,7 +24,7 @@ module "gke" {
       image_type         = "COS"
       auto_repair        = true
       auto_upgrade       = true
-      service_account    = "project-service-account@<PROJECT ID>.iam.gserviceaccount.com"
+      service_account    = "terraform@badamscka.iam.gserviceaccount.com"
       preemptible        = false
       initial_node_count = 80
     },
