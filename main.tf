@@ -129,5 +129,5 @@ module "gke" {
 }
 
 provider "kubernetes" {
-  config_context_cluster   = "${module.gke.name}"
+  config_context_cluster = "${module.gke.name}"
 }
