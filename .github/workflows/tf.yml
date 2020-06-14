@@ -35,7 +35,8 @@ jobs:
           pip3 install ansible-vault
           echo "${{ secrets.SERVICEACCOUNT }}" > secret.txt
           ansible-vault decrypt serviceaccount.json --vault-password-file secret.txt
-          # printf "${{ secrets.SERVICEACCOUNT }}" # > ./creds.json
+          gcloud auth activate-service-account terraform@badamscka.iam.gserviceaccount.com --key-file=serviceaccount.json --project=${{ secrets.GCP_PROJECT }}
+
       - name: Terraform Format
         uses: autotune/terraform-github-actions@master
         with:
@@ -97,5 +98,6 @@ jobs:
 
       - name: Get kubeconfig 
         run: |
+                gcloud auth activate-service-account terraform@badamscka.iam.gserviceaccount.com --key-file=serviceaccount.json --project=${{ secrets.GCP_PROJECT }}
                 gcloud container clusters get-credentials ${{ secrets.GCP_PROJECT }} 
 
