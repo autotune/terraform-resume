@@ -52,6 +52,7 @@ jobs:
           args: --backend-config=backend/backend.tf -backend-config backend/backend.tfvars
         env:
           TF_WORKSPACE: ${{ env.WORKSPACE }}
+          TF_project: ${{ secrets.GCP_PROJECT }}
           GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
 
       - name: Terraform Validate
@@ -61,8 +62,8 @@ jobs:
           tf_actions_subcommand: validate
         env:
           TF_WORKSPACE: ${{ env.WORKSPACE }}
-          AWS_SHARED_CREDENTIALS_FILE: .aws/credentials
           GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
+          TF_project: ${{ secrets.GCP_PROJECT }}
 
       - name: Terraform Plan
         id: terraform-plan
@@ -77,6 +78,7 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: "serviceaccount.json"
           TF_cf_email: ${{ secrets.CLOUDFLARE_EMAIL }}
           TF_cf_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_project: ${{ secrets.GCP_PROJECT }}
 
       - name: Terraform Apply
         id: terraform-apply
@@ -89,8 +91,9 @@ jobs:
           TF_WORKSPACE: ${{ env.WORKSPACE }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOOGLE_APPLICATION_CREDENTIALS: "serviceaccount.json"
-          cf_email: ${{ secrets.CLOUDFLARE_EMAIL }}
-          cf_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_cf_email: ${{ secrets.CLOUDFLARE_EMAIL }}
+          TF_cf_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_project: ${{ secrets.GCP_PROJECT }}
 
       - name: Cleanup GCP Credentials
         run: |
