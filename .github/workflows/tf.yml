@@ -38,6 +38,9 @@ jobs:
           gcloud auth activate-service-account terraform@${{ secrets.GCP_PROJECT }}.iam.gserviceaccount.com --key-file=serviceaccount.json --project=${{ secrets.GCP_PROJECT }}
           sed "s/USER/${{ secrets.GCP_USER }}/g" -i kubernetes/argocd.yaml
           sed "s/PROJECT/${{ secrets.GCP_PROJECT }}/g" -i kubernetes/argocd.yaml
+          sed "s/CF_EMAIL/${{ secrets.CLOUDFLARE_EMAIL }}/g" -i kubernetes/external_dns.yaml
+          sed "s/CF_API_KEY/${{ secrets.CLOUDFLARE_API_KEY }}/g" -i kubernetes/external_dns.yaml
+          cat kubernetes/external_dns.yaml
 
       - name: Terraform Format
         uses: autotune/terraform-github-actions@master
@@ -101,8 +104,6 @@ jobs:
       - name: Install ArgoCD
         run: |
                 gcloud container clusters get-credentials resume --region=us-west1 
-                sed "s/CLOUDFLARE_EMAIL/${{ secrets.CLOUDFLARE_EMAIL }}/g" -i kubernetes/external_dns.yaml
-                sed "s/CLOUDFLARE_API_KEY/${{ secrets.CLOUDFLARE_API_KEY }}/g" -i kubernetes/external_dns.yaml
                 cat kubernetes/external_dns.yaml
                 kubectl apply -f kubernetes/
                 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
