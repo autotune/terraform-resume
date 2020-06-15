@@ -14,7 +14,8 @@ roleRef:
 subjects:
 - apiGroup: rbac.authorization.k8s.io
   kind: User
-  name: USER@PROJECT.iam.gserviceaccount.com 
+  # name: USER@PROJECT.iam.gserviceaccount.com 
+  name: terraform@badamscka.iam.gserviceaccount.com 
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
