@@ -22,7 +22,7 @@ jobs:
         id: tfvars
         run: |
             echo "::set-output name=tfvars_file::tfvars/${WORKSPACE}.tfvars"
-            echo "${{CLOUDFLARE_API_TOKEN}}"
+            echo "${{secrets.CLOUDFLARE_API_TOKEN}}"
       - name: Checkout
         uses: actions/checkout@1.0.0
         with:
