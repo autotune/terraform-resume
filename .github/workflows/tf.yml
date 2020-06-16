@@ -131,7 +131,25 @@ jobs:
         with:
           submodules: 'false'
 
-      - name: Echo hello world
+      - name: Download artifacts to current dir 
+        uses: actions/download-artifact@v2
+        with:
+            path: ./docker_version
+
+      - name: Set docker version
         run: |
           # driven off profiles
-          docker build -t resume:latest argocd/resume 
+          if test -f "version.txt"; then
+              version(($(cat version.txt) + 1))
+              echo $version > version.txt
+          else:
+              echo 1 > version.txt
+          fi
+
+      - name: Upload docker version to GitHub Actions  
+        uses: actions/upload-artifact@v2
+        with:
+            name: docker_version
+            path: version.txt
+
+        # docker build -t resume:latest argocd/resume 
