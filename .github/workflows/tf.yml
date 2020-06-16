@@ -145,7 +145,7 @@ jobs:
           fi
 
           version=$(($(cat version.txt) + 1))
-          echo $version > version.txt
+          echo $version > ./version.txt
 
       - name: Upload docker version to GitHub Actions  
         uses: actions/upload-artifact@v2
@@ -153,4 +153,9 @@ jobs:
             name: docker_version
             path: ./version.txt
 
-        # docker build -t resume:latest argocd/resume 
+      - name: Build docker image and push 
+        run: |
+          # driven off profiles
+          docker build -t resume:$(cat ./docker_version) argocd/resume 
+          docker tag resume:$(cat ./docker_version) gcr.io/${{ secrets.GCP_PROJECT }}/resume:$(cat ./docker_version)
+          docker push gcr.io/${{ secrets.GCP_PROJECT }}/resume:$(cat ./docker_version)
