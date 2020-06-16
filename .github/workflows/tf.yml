@@ -139,7 +139,7 @@ jobs:
       - name: Set docker version
         run: |
           # driven off profiles
-          if [[ -f "version.txt"; ]] 
+          if [[ -f "version.txt" ]]; 
           then
               version(($(cat version.txt) + 1))
               echo $version > version.txt
