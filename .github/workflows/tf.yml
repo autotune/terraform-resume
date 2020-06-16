@@ -103,6 +103,7 @@ jobs:
       - name: Install ArgoCD
         run: |
                 gcloud container clusters get-credentials resume --region=us-west1 
+                kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.15.1/cert-manager.yaml
                 kubectl apply -f kubernetes/
                 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
                 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
