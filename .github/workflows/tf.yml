@@ -155,6 +155,7 @@ jobs:
 
       - name: Build docker image and push 
         run: |
+          echo "${{ secrets.SERVICEACCOUNT }}" > secret.txt
           ansible-vault decrypt serviceaccount.json --vault-password-file secret.txt
           gcloud auth activate-service-account terraform@${{ secrets.GCP_PROJECT }}.iam.gserviceaccount.com --key-file=serviceaccount.json --project=${{ secrets.GCP_PROJECT }}
           docker build -t resume:$(cat ./version.txt) argocd/resume 
