@@ -113,5 +113,18 @@ jobs:
                     sleep 1;
                 done
 
+  docker:
+    strategy:
+      matrix:
+        workspace: [staging]
 
+    name: ${{ matrix.workspace }}
+    runs-on: ubuntu-latest
 
+    env:
+      WORKSPACE: ${{ matrix.workspace }}
+
+      - name: Echo hello world
+        run: |
+          # driven off profiles
+          echo "hello world"
