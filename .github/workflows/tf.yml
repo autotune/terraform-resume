@@ -130,4 +130,10 @@ jobs:
         run: |
           # driven off profiles
           # docker build -t resume:latest argocd/resume 
-          find ~ -type d|grep resume
+          echo "Hello"
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: 'false'
+
