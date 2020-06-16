@@ -126,14 +126,13 @@ jobs:
       WORKSPACE: ${{ matrix.workspace }}
 
     steps:
-      - name: Echo hello world
-        run: |
-          # driven off profiles
-          # docker build -t resume:latest argocd/resume 
-          echo "Hello"
-
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: 'false'
 
+      - name: Echo hello world
+        run: |
+          # driven off profiles
+          # docker build -t resume:latest argocd/resume 
+          find ./
