@@ -118,12 +118,14 @@ jobs:
       matrix:
         workspace: [staging]
 
+    
     name: ${{ matrix.workspace }}
     runs-on: ubuntu-latest
 
     env:
       WORKSPACE: ${{ matrix.workspace }}
 
+    steps:
       - name: Echo hello world
         run: |
           # driven off profiles
