@@ -134,5 +134,4 @@ jobs:
       - name: Echo hello world
         run: |
           # driven off profiles
-          # docker build -t resume:latest argocd/resume 
-          find ./
+          docker build -t resume:latest argocd/resume 
