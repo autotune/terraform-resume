@@ -139,18 +139,18 @@ jobs:
       - name: Set docker version
         run: |
           # driven off profiles
-          if [[ -f "version.txt" ]]; 
+          if [[ ! -f "version.txt" ]]; 
           then
-              version=$(($(cat version.txt) + 1))
-              echo $version > version.txt
-          else:
-              echo 1 > version.txt
+              echo 0 > version.txt
           fi
+
+          version=$(($(cat version.txt) + 1))
+          echo $version > version.txt
 
       - name: Upload docker version to GitHub Actions  
         uses: actions/upload-artifact@v2
         with:
             name: docker_version
-            path: version.txt
+            path: ./version.txt
 
         # docker build -t resume:latest argocd/resume 
