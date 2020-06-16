@@ -155,7 +155,7 @@ jobs:
 
       - name: Build docker image and push 
         run: |
-          # driven off profiles
+          gcloud auth activate-service-account terraform@${{ secrets.GCP_PROJECT }}.iam.gserviceaccount.com --key-file=serviceaccount.json --project=${{ secrets.GCP_PROJECT }}
           docker build -t resume:$(cat ./version.txt) argocd/resume 
           docker tag resume:$(cat ./version.txt) gcr.io/${{ secrets.GCP_PROJECT }}/resume:$(cat ./version.txt)
           docker push gcr.io/${{ secrets.GCP_PROJECT }}/resume:$(cat ./version.txt)
