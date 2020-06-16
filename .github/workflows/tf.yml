@@ -141,7 +141,7 @@ jobs:
           # driven off profiles
           if [[ -f "version.txt" ]]; 
           then
-              version=(($(cat version.txt) + 1))
+              version=$(($(cat version.txt) + 1))
               echo $version > version.txt
           else:
               echo 1 > version.txt
