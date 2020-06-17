@@ -191,8 +191,10 @@ jobs:
       - name: Configure ArgoCD services
         run: |
           ~/argocd app get resume
-          ~/argocd app get guestbook
-         # ~/argocd app create resume --repo https://github.com/autotune/terraform-resume.git --path argocd/resume --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
-         
+          if [[ ~/argocd app get guestbook|awk '{print $2}' != "NAMESPACE" ]] 
+          then
+              echo "Not found"
+              # ~/argocd app create resume --repo https://github.com/autotune/terraform-resume.git --path argocd/resume --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
+          fi
        
 
