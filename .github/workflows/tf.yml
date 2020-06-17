@@ -174,7 +174,7 @@ jobs:
           ansible-vault decrypt serviceaccount.json --vault-password-file secret.txt
           gcloud auth activate-service-account terraform@${{ secrets.GCP_PROJECT }}.iam.gserviceaccount.com --key-file=serviceaccount.json --project=${{ secrets.GCP_PROJECT }}
           gcloud auth configure-docker
-          sed "s/VERSION/$(cat version.txt)/g" -i kubernetes/resume/deployment.yaml
+          sed "s/VERSION/$(cat version.txt)/g" -i argocd/resume/deployment.yaml
           curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/$VERSION/argocd-linux-amd64
           chmod +x /usr/local/bin/argocd
           if [[ $(cat argocd/resume/build_release.txt) == true ]];
