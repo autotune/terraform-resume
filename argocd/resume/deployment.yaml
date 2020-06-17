@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: resume
-        image: gcr.io/badamscka/resume:VERSION 
+        image: gcr.io/badamscka/resume:1 
         ports:
         - containerPort: 80
 ---
