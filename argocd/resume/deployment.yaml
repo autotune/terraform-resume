@@ -45,3 +45,7 @@ spec:
         backend:
           serviceName: resume
           servicePort: 80
+  tls:
+  - hosts:
+    - contrasting.org
+    secretName: argocd-secret 
