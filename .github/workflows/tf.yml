@@ -192,7 +192,7 @@ jobs:
         run: |
           if [[ $(~/argocd app get resume|head -n1|awk '{print $3}') != "NAMESPACE" ]] 
           then
-              ~/argocd app get resume|head-n1|awk '{print $3}'
+              ~/argocd app get resume|head -n1|awk '{print $3}'
               echo "Not found"
               # ~/argocd app create resume --repo https://github.com/autotune/terraform-resume.git --path argocd/resume --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
           fi
