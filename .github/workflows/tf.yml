@@ -164,6 +164,7 @@ jobs:
           ansible-vault decrypt serviceaccount.json --vault-password-file secret.txt
           gcloud auth activate-service-account terraform@${{ secrets.GCP_PROJECT }}.iam.gserviceaccount.com --key-file=serviceaccount.json --project=${{ secrets.GCP_PROJECT }}
           gcloud auth configure-docker
+          gcloud container clusters get-credentials resume --region=us-west1
           sed "s/VERSION/$(cat version.txt)/g" -i argocd/resume/deployment.yaml
           if [[ $(cat argocd/resume/build_release.txt) == true ]];
           then
