@@ -186,5 +186,5 @@ jobs:
          # else
              echo "false"
          # ~/argocd login "$(kubectl get svc argocd-server -nargocd|awk '{print $4}'|tail -1)" --username=admin --password="${{ secrets.ARGOCD_PASSWORD }}" --insecure
-         fi
+         # fi
 
