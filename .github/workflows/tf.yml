@@ -116,11 +116,13 @@ jobs:
       - name: Install argocd cli and change argocd password
         run: |
          VERSION=$(curl --silent "https://api.github.com/repos/argoproj/argo-cd/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
-         if [[ "$(argocd login $(kubectl get svc argocd-server -nargocd|awk '{print $4}'|tail -1) --username=admin --password=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2) --insecure)|awk '{print $4}'" ]];
+         curl -SL -o ~/argocd https://github.com/argoproj/argo-cd/releases/download/$VERSION/argocd-linux-amd64
+         chmod +x ~/argocd
+         if [[ "$(~/argocd login $(kubectl get svc argocd-server -nargocd|awk '{print $4}'|tail -1) --username=admin --password=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2) --insecure)|awk '{print $4}'" ]];
          then
-             argocd account update-password --account=admin --current-password=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2) --new-password=${{ secrets.ARGOCD_PASSWORD }}
+             ~/argocd account update-password --account=admin --current-password=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2) --new-password=${{ secrets.ARGOCD_PASSWORD }}
          else
-             argocd login $(kubectl get svc argocd-server -nargocd|awk '{print $4}'|tail -1) --username=admin --password=${{ secrets.ARGOCD_PASSWORD }} --insecure
+             ~/argocd login $(kubectl get svc argocd-server -nargocd|awk '{print $4}'|tail -1) --username=admin --password=${{ secrets.ARGOCD_PASSWORD }} --insecure
          fi
 
       - name: Add resume service
@@ -175,8 +177,6 @@ jobs:
           gcloud auth activate-service-account terraform@${{ secrets.GCP_PROJECT }}.iam.gserviceaccount.com --key-file=serviceaccount.json --project=${{ secrets.GCP_PROJECT }}
           gcloud auth configure-docker
           sed "s/VERSION/$(cat version.txt)/g" -i argocd/resume/deployment.yaml
-          curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/$VERSION/argocd-linux-amd64
-          chmod +x /usr/local/bin/argocd
           if [[ $(cat argocd/resume/build_release.txt) == true ]];
           then
               docker build -t resume:$(cat ./version.txt) argocd/resume 
