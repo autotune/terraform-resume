@@ -180,10 +180,8 @@ jobs:
          chmod +x ~/argocd
          if [[ "$(argocd login $(kubectl get svc argocd-server -nargocd|awk '{print $4}'|tail -1) --username=admin --password=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2) --insecure 2>&1)|awk '{print $4}'" == "successfully" ]];
          then
-             echo "true"
-             # ~/argocd account update-password --account=admin --current-password=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2) --new-password=${{ secrets.ARGOCD_PASSWORD }}
+             ~/argocd account update-password --account=admin --current-password=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2) --new-password=${{ secrets.ARGOCD_PASSWORD }}
          else
-             echo "false"
-            # ~/argocd login $(kubectl get svc argocd-server -nargocd|awk '{print $4}'|tail -1) --username=admin --password=${{ secrets.ARGOCD_PASSWORD }} --insecure
+             ~/argocd login $(kubectl get svc argocd-server -nargocd|awk '{print $4}'|tail -1) --username=admin --password=${{ secrets.ARGOCD_PASSWORD }} --insecure
          fi
 
