@@ -44,7 +44,7 @@ spec:
       - path: /
         backend:
           serviceName: resume
-          servicePort: 80
+          servicePort: 443
   tls:
   - hosts:
     - contrasting.org
