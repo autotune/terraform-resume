@@ -188,4 +188,10 @@ jobs:
          else
              ~/argocd login "$(kubectl get svc argocd-server -nargocd|awk '{print $4}'|tail -1)" --username=admin --password="${{ secrets.ARGOCD_ADMIN }}" --insecure
          fi
+         
+      - name: Install argocd cli and change argocd password
+        run: |
+         argocd app create resume --repo https://github.com/autotune/terraform-resume.git --path resume --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
+         
+       
 
