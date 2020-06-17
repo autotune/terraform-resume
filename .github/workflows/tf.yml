@@ -182,6 +182,6 @@ jobs:
          then
              ~/argocd account update-password --account=admin --current-password=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2) --new-password=${{ secrets.ARGOCD_PASSWORD }}
          else
-             ~/argocd login $(kubectl get svc argocd-server -nargocd|awk '{print $4}'|tail -1) --username=admin --password=${{ secrets.ARGOCD_PASSWORD }} --insecure
+             ~/argocd login "$(kubectl get svc argocd-server -nargocd|awk '{print $4}'|tail -1)" --username=admin --password="${{ secrets.ARGOCD_PASSWORD }}" --insecure
          fi
 
