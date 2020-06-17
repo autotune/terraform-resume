@@ -190,7 +190,7 @@ jobs:
          
       - name: Configure ArgoCD services
         run: |
-          if [[ $(~/argocd app get resume|awk '{print $2}') != "NAMESPACE" ]] 
+          if [[ $(~/argocd app get resume|awk '{print $3}') != "NAMESPACE" ]] 
           then
               ~/argocd app get resume|awk '{print $3}'
               echo "Not found"
