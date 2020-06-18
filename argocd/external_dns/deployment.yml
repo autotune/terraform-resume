@@ -65,5 +65,8 @@ spec:
                secretKeyRef:
                    name: clf
                    key: token 
-        - name: CF_EMAIL
-          value: "CLF_EMAIL"
+           name: CF_EMAIL
+             valueFrom:
+               secretKeyRef:
+                   name: clf
+                   key: email 
