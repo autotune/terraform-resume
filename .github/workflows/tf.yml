@@ -145,7 +145,7 @@ jobs:
           
           if [[ $(~/argocd app get external-dns|head -n1|awk '{print $1}') != "Name:" ]] 
           then
-              ~/argocd app create cert-manager --repo https://github.com/autotune/terraform-resume.git --path argocd/external-dns --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
+              ~/argocd app create external-dns --repo https://github.com/autotune/terraform-resume.git --path argocd/external-dns --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
               ~/argocd app set external-dns --sync-policy automated
           fi
 
