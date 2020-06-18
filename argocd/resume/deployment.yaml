@@ -35,7 +35,8 @@ kind: Ingress
 metadata:
   name: contrasting-org 
   annotations:
-    # nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/issuer: "letsencrypt-staging"
 spec:
   rules:
   - host: contrasting.org
