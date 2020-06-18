@@ -105,7 +105,7 @@ jobs:
                 gcloud container clusters get-credentials resume --region=us-west1
                 if [[ $(kubectl get secret -nargocd|grep clf|head -n1|awk '{print $1}') != "clf" ]];
                 then
-                    kubectl create secret generic clf -nargocd --from-literal=token=$( echo ${{ secrets.CLOUDFLARE_API_TOKEN }}|base64 ) --from-literal=email=$( echo ${{ secrets.CLOUDFLARE_EMAIL }}|base64
+                    kubectl create secret generic clf -nargocd --from-literal=token=$( echo ${{ secrets.CLOUDFLARE_API_TOKEN }}|base64 ) --from-literal=email=$( echo ${{ secrets.CLOUDFLARE_EMAIL }}|base64 )
                 fi
                 kubectl apply -f kubernetes/argocd-perms.yaml
                 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
