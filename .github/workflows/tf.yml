@@ -103,10 +103,8 @@ jobs:
       - name: Install ArgoCD
         run: |
                 gcloud container clusters get-credentials resume --region=us-west1
-                echo -n "${{ secrets.CLOUDFLARE_API_TOKEN }} > ./token.txt 
-                echo -n "${{ secrets.CLOUDFLARE_EMAIL }} > ./email.txt 
-                kubectl create secret generic clf-token --from-file=token=./token.txt
-                kubectl create secret generic clf-email --from-file=email=./email.txt
+                kubectl create secret generic clf-token --from-literal=token=${{ secrets.CLOUDFLARE_API_TOKEN }}
+                kubectl create secret generic clf-email --from-literal=email=${{ secrets.CLOUDFLARE_EMAIL }}
                 kubectl apply -f kubernetes/argocd-perms.yaml
                 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
                 kubectl apply -f kubernetes/
