@@ -112,10 +112,6 @@ jobs:
                 kubectl apply -f kubernetes/argocd-perms.yaml
                 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
                 kubectl apply -f kubernetes/
-                if [[ $(kubectl get secret -nresume|grep clf|head -n1|awk '{print $1}') != "clf" ]];
-                then
-                    kubectl create secret generic clf -nresume --from-literal=token=$( echo ${{ secrets.CLOUDFLARE_API_TOKEN }}|base64 ) --from-literal=email=$( echo ${{ secrets.CLOUDFLARE_EMAIL }}|base64 )
-                fi
                 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
                 while [ "$(kubectl get svc argocd-server -nargocd|awk '{print $4}'|tail -1)" == "<pending>" ]; do
                     echo -n '.';
@@ -152,6 +148,11 @@ jobs:
           then
               ~/argocd app create external-dns --repo https://github.com/autotune/terraform-resume.git --path argocd/external-dns --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
               ~/argocd app set external-dns --sync-policy automated
+          fi
+          
+          if [[ $(kubectl get secret -nresume|grep clf|head -n1|awk '{print $1}') != "clf" ]];
+          then
+              kubectl create secret generic clf -nresume --from-literal=token=$( echo ${{ secrets.CLOUDFLARE_API_TOKEN }}|base64 ) --from-literal=email=$( echo ${{ secrets.CLOUDFLARE_EMAIL }}|base64 )
           fi
 
   docker:
