@@ -38,8 +38,6 @@ jobs:
           gcloud auth activate-service-account terraform@${{ secrets.GCP_PROJECT }}.iam.gserviceaccount.com --key-file=serviceaccount.json --project=${{ secrets.GCP_PROJECT }}
           sed "s/USER/${{ secrets.GCP_USER }}/g" -i kubernetes/argocd-perms.yaml
           sed "s/PROJECT/${{ secrets.GCP_PROJECT }}/g" -i kubernetes/argocd-perms.yaml
-          sed "s/CLF_EMAIL/${{ secrets.CLOUDFLARE_EMAIL }}/g" -i kubernetes/external_dns.yaml
-          sed "s/CLF_API_TOKEN/${{ secrets.CLOUDFLARE_API_TOKEN }}/g" -i kubernetes/external_dns.yaml
 
       - name: Terraform Format
         uses: autotune/terraform-github-actions@master
