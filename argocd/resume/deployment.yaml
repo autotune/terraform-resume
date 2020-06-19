@@ -47,7 +47,7 @@ spec:
         backend:
           serviceName: resume
           servicePort: 80
-#   tls:
-#   - hosts:
-#     - contrasting.org
-#     secretName: contrasting-org 
+  tls:
+  - hosts:
+    - contrasting.org
+    secretName: contrasting-org 
