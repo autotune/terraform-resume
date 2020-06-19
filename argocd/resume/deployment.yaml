@@ -50,4 +50,4 @@ spec:
   tls:
   - hosts:
     - contrasting.org
-    secretName: letsencrypt-staging 
+    secretName: contrasting-org 
