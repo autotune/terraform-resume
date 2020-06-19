@@ -60,14 +60,13 @@ spec:
         - --domain-filter=contrasting.org # (optional) limit to only example.com domains; change to match the zone created above.
         - --provider=cloudflare
         - --cloudflare-proxied # (optional) enable the proxy feature of Cloudflare (DDOS protection, CDN...)
-        command: ["export CF_EMAIL=$(echo $CF_EMAIL_ENCODED|base64 -d)"]
         env:
-          - name: CF_API_TOKEN_ENCODED
+          - name: CF_API_TOKEN
             valueFrom:
               secretKeyRef:
                   name: clf
                   key: token 
-          - name: CF_EMAIL_ENCODED
+          - name: CF_EMAIL
             valueFrom:
               secretKeyRef:
                   name: clf
