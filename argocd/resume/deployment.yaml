@@ -37,6 +37,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     cert-manager.io/issuer: "letsencrypt-staging"
+    external-dns.alpha.kubernetes.io/hostname: contrasting.org
 spec:
   rules:
   - host: contrasting.org
