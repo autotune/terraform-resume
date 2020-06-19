@@ -49,5 +49,5 @@ spec:
           servicePort: 80
   tls:
   - hosts:
-  - contrasting.org
+    - contrasting.org
       secretName: argocd-secret 
