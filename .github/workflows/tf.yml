@@ -152,9 +152,7 @@ jobs:
           
           if [[ $(kubectl get secret -ndefault|grep clf|head -n1|awk '{print $1}') != "clf" ]];
           then
-              kubectl create secret generic clf -ndefault --from-literal=token=$( echo ${{ secrets.CF_API_TOKEN_DEFAULT }}|base64 ) --from-literal=email=$( echo ${{ secrets.CLOUDFLARE_EMAIL }}|base64 )
-          else:
-              kubectl delete secret clf  
+              kubectl create secret generic clf -ndefault --from-literal=token=$( echo ${{ secrets.CF_API_TOKEN_DEFAULT }}|base64 ) --from-literal=email=$( echo ${{ secrets.CLOUDFLARE_EMAIL }}|base64 ) 
           fi
 
   docker:
