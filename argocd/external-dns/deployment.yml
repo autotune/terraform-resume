@@ -61,12 +61,12 @@ spec:
         - --provider=cloudflare
         - --cloudflare-proxied # (optional) enable the proxy feature of Cloudflare (DDOS protection, CDN...)
         env:
-          - name: CF_API_TOKEN
+          - name: CF_API_TOKEN_ENCODED
             valueFrom:
               secretKeyRef:
                   name: clf
                   key: token 
-          - name: CF_EMAIL
+          - name: CF_EMAIL_ENCODED
             valueFrom:
               secretKeyRef:
                   name: clf
