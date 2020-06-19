@@ -60,7 +60,7 @@ spec:
         - --domain-filter=contrasting.org # (optional) limit to only example.com domains; change to match the zone created above.
         - --provider=cloudflare
         - --cloudflare-proxied # (optional) enable the proxy feature of Cloudflare (DDOS protection, CDN...)
-        command: ["bash -c "export foo=bar""]
+        command: ["bash", "-c", "export foo=bar"]
         env:
           - name: CF_API_TOKEN_ENCODED
             valueFrom:
