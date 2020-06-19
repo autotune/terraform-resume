@@ -101,10 +101,6 @@ jobs:
       - name: Install ArgoCD
         run: |
                 gcloud container clusters get-credentials resume --region=us-west1
-                if [[ $(kubectl get secret|grep clf|head -n1|awk '{print $1}') != "clf" ]];
-                then
-                    kubectl create secret generic clf --from-literal=token=$( echo ${{ secrets.CLOUDFLARE_API_TOKEN_DEFAULT }}|base64 ) --from-literal=email=$( echo ${{ secrets.CLOUDFLARE_EMAIL }}|base64 )
-                fi
                 if [[ $(kubectl get secret -nargocd|grep clf|head -n1|awk '{print $1}') != "clf" ]];
                 then
                     kubectl create secret generic clf -nargocd --from-literal=token=$( echo ${{ secrets.CLOUDFLARE_API_TOKEN }} ) --from-literal=email=$( echo ${{ secrets.CLOUDFLARE_EMAIL }} )
@@ -152,7 +148,7 @@ jobs:
           
           if [[ $(kubectl get secret -ndefault|grep clf|head -n1|awk '{print $1}') != "clf" ]];
           then
-              kubectl create secret generic clf -ndefault --from-literal=token=$( echo ${{ secrets.CF_API_TOKEN_DEFAULT }}|base64 ) --from-literal=email=$( echo ${{ secrets.CLOUDFLARE_EMAIL }}|base64 ) 
+              kubectl create secret generic clf -ndefault --from-literal=token=$( echo ${{ secrets.CF_API_TOKEN_DEFAULT }} ) --from-literal=email=$( echo ${{ secrets.CLOUDFLARE_EMAIL }} ) 
           fi
 
   docker:
