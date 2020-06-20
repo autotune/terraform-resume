@@ -22,6 +22,14 @@ spec:
           serviceName: argocd-server
           servicePort: https
         path: /
+        
+  - host: argocd2.contrasting.org
+    http:
+      paths:
+      - backend:
+          serviceName: argocd-server
+          servicePort: https
+        path: /
   tls:
   - hosts:
     - argocd.contrasting.org
