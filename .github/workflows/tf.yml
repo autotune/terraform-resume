@@ -181,6 +181,8 @@ jobs:
 
       - name: Download artifacts to current dir 
         run: |
+          # Needs at least one text file so this is a workaround for first run
+          gsutil cp version.txt gs://${{ secrets.GCP_STORAGE }}/*.txt ./
           gsutil cp gs://${{ secrets.GCP_STORAGE }}/*.txt ./
           
       - name: Set docker version
@@ -201,17 +203,14 @@ jobs:
 
       - name: Build docker image and push 
         run: |
-          echo "${{ secrets.SERVICEACCOUNT }}" > secret.txt
-          ansible-vault decrypt serviceaccount.json --vault-password-file secret.txt
-          gcloud auth activate-service-account terraform@${{ secrets.GCP_PROJECT }}.iam.gserviceaccount.com --key-file=serviceaccount.json --project=${{ secrets.GCP_PROJECT }}
           gcloud auth configure-docker
           gcloud container clusters get-credentials resume --region=us-west1
           sed "s/VERSION/$(cat version.txt)/g" -i argocd/resume/deployment.yaml
           if [[ $(cat argocd/resume/build_release.txt) == true ]];
           then
-              docker build -t resume:$(cat ./version.txt) argocd/resume 
-              docker tag resume:$(cat ./version.txt) gcr.io/${{ secrets.GCP_PROJECT }}/resume:$(cat ./version.txt)
-              docker push gcr.io/${{ secrets.GCP_PROJECT }}/resume:$(cat ./version.txt)
+              docker build -t resume:$(cat ./docker_version.txt) argocd/resume 
+              docker tag resume:$(cat ./docker_version.txt) gcr.io/${{ secrets.GCP_PROJECT }}/resume:$(cat ./docker_version.txt)
+              docker push gcr.io/${{ secrets.GCP_PROJECT }}/resume:$(cat ./docker_version.txt)
           fi
           
 
