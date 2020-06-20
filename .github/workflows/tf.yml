@@ -173,6 +173,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
             path: ./docker_version
+            key: version.txt
 
       - name: Set docker version
         run: |
