@@ -172,7 +172,8 @@ jobs:
       - name: Download artifacts to current dir 
         uses: actions/download-artifact@v2
         with:
-            path: ./version.txt
+            path: docker_version
+            key: version.txt
 
       - name: Set docker version
         run: |
@@ -189,7 +190,7 @@ jobs:
       - name: Upload docker version to GitHub Actions  
         uses: actions/upload-artifact@v2
         with:
-            name: version.txt
+            name: docker_version
             path: ./version.txt
 
       - name: Build docker image and push 
