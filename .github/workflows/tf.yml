@@ -163,7 +163,12 @@ jobs:
     env:
       WORKSPACE: ${{ matrix.workspace }}
 
-    steps:
+    steps:     
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: 'false'
+      
       - name: Setup GCP Credentials
         run: |
           # Setup the credentials in the workspace because everything in terraform is
@@ -173,11 +178,6 @@ jobs:
           echo "${{ secrets.SERVICEACCOUNT }}" > secret.txt
           ansible-vault decrypt serviceaccount.json --vault-password-file secret.txt
           gcloud auth activate-service-account terraform@${{ secrets.GCP_PROJECT }}.iam.gserviceaccount.com --key-file=serviceaccount.json --project=${{ secrets.GCP_PROJECT }}
-          
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          submodules: 'false'
 
       - name: Download artifacts to current dir 
         run: |
