@@ -171,7 +171,7 @@ jobs:
 
       - name: Download artifacts to current dir 
         run: |
-          gsutil cp gs://{{ secrets.GCP_STORAGE }}/*.txt ./
+          gsutil cp gs://${{ secrets.GCP_STORAGE }}/*.txt ./
           
       - name: Set docker version
         run: |
@@ -187,7 +187,7 @@ jobs:
 
       - name: Upload docker version to GitHub Actions  
         run: |
-          gsutil cp docker_version.txt gs://{{ secrets.GCP_STORAGE }}
+          gsutil cp docker_version.txt gs://${{ secrets.GCP_STORAGE }}
 
       - name: Build docker image and push 
         run: |
