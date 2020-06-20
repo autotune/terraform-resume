@@ -173,25 +173,28 @@ jobs:
         uses: actions/download-artifact@v2
         with:
             path: docker_version
-            key: version.txt
 
+      - name: Check docker versin 
+        run: |
+          cat docker_version.txt 
+          
       - name: Set docker version
         run: |
           # driven off profiles
-          if [[ ! -f "version.txt" ]]; 
+          if [[ ! -f "docker_version.txt" ]]; 
           then
-              echo 0 > version.txt
+              echo 0 > docker_version.txt
           fi
 
-          version=$(($(cat version.txt) + 1))
-          echo $version > ./version.txt
-          echo "IMAGE VERSION: $(cat version.txt)"
+          version=$(($(cat docker_version.txt) + 1))
+          echo $version > ./docker_version.txt
+          echo "IMAGE VERSION: $(cat docker_version.txt)"
 
       - name: Upload docker version to GitHub Actions  
         uses: actions/upload-artifact@v2
         with:
             name: docker_version
-            path: ./version.txt
+            path: ./docker_version.txt
 
       - name: Build docker image and push 
         run: |
