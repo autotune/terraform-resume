@@ -1,0 +1,67 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hit-counter
+  labels:
+    app: hit-counter
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: hit-counter
+spec:
+  selector:
+    matchLabels:
+      app: hit-counter
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: hit-counter
+    spec:
+      containers:
+      - name: hit-counter
+        image: gcr.io/badamscka/hit-counter:0.8
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: hit-counter
+          mountPath: /srv/images
+      volumes:
+      - name: hit-counter
+        persistentVolumeClaim:
+          claimName: hit-counter
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hit-counter
+spec:
+  selector:
+    app: hit-counter
+  ports:
+    - protocol: TCP
+      port: 80
+  type: LoadBalancer
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hit-counter 
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+  - host: hitcounter.contrasting.org
+    http:
+      paths:
+      - backend:
+          serviceName: hit-counter
+          servicePort: 80

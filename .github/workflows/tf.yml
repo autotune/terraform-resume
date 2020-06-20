@@ -215,6 +215,9 @@ jobs:
               docker tag resume:$(cat ./docker_version.txt) gcr.io/${{ secrets.GCP_PROJECT }}/resume:$(cat ./docker_version.txt)
               docker push gcr.io/${{ secrets.GCP_PROJECT }}/resume:$(cat ./docker_version.txt)
           fi
-          
-
-
+          if [[ $(cat argocd/hit-counter/build_release.txt) == true ]];
+          then
+              docker build -t hit-counter:$(cat ./docker_version.txt) argocd/hit-counter
+              docker tag hit-counter:$(cat ./docker_version.txt) gcr.io/${{ secrets.GCP_PROJECT }}/hit-counter:$(cat ./docker_version.txt)
+              docker push gcr.io/${{ secrets.GCP_PROJECT }}/hit-counter:$(cat ./docker_version.txt)
+          fi
