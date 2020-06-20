@@ -45,7 +45,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     cert-manager.io/issuer: "letsencrypt-staging"
-    external-dns.alpha.kubernetes.io/ttl: "300" #optional
+    external-dns.alpha.kubernetes.io/ttl: "60" #optional
     external-dns.alpha.kubernetes.io/hostname: contrasting.org
 spec:
   rules:
