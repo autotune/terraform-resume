@@ -182,7 +182,7 @@ jobs:
       - name: Download artifacts to current dir 
         run: |
           # Needs at least one text file so this is a workaround for first run
-          gsutil cp version.txt gs://${{ secrets.GCP_STORAGE }}/*.txt ./
+          gsutil cp version.txt gs://${{ secrets.GCP_STORAGE }}
           gsutil cp gs://${{ secrets.GCP_STORAGE }}/*.txt ./
           
       - name: Set docker version
