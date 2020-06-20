@@ -173,10 +173,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
             path: docker_version
-
-      - name: Check docker versin 
-        run: |
-          cat docker_version.txt 
           
       - name: Set docker version
         run: |
