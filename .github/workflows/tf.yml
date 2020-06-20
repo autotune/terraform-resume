@@ -170,9 +170,8 @@ jobs:
           submodules: 'false'
 
       - name: Download artifacts to current dir 
-        uses: actions/download-artifact@v2
-        with:
-            path: docker_version
+        run: |
+          gsutil cp gs://{{ secrets.GCP_STORAGE }}/*.txt ./
           
       - name: Set docker version
         run: |
@@ -187,10 +186,8 @@ jobs:
           echo "IMAGE VERSION: $(cat docker_version.txt)"
 
       - name: Upload docker version to GitHub Actions  
-        uses: actions/upload-artifact@v2
-        with:
-            name: docker_version
-            path: ./docker_version.txt
+        run: |
+          gsutil cp docker_version.txt gs://{{ secrets.GCP_STORAGE }}
 
       - name: Build docker image and push 
         run: |
