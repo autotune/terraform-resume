@@ -184,6 +184,7 @@ jobs:
 
           version=$(($(cat version.txt) + 1))
           echo $version > ./version.txt
+          echo "IMAGE VERSION: $(cat version.txt)"
 
       - name: Upload docker version to GitHub Actions  
         uses: actions/upload-artifact@v2
