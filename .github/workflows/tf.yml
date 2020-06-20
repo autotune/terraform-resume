@@ -181,9 +181,12 @@ jobs:
 
       - name: Download artifacts to current dir 
         run: |
-          # Needs at least one text file so this is a workaround for first run
-          gsutil cp version.txt gs://${{ secrets.GCP_STORAGE }}
-          gsutil cp gs://${{ secrets.GCP_STORAGE }}/*.txt ./
+          gsutil cp gs://${{ secrets.GCP_STORAGE }}/* ./
+
+          if [[ ! -f "docker_version.txt" ]]; 
+          then
+              echo 0 > docker_version.txt
+          fi          
           
       - name: Set docker version
         run: |
