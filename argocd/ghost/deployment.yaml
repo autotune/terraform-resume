@@ -76,7 +76,7 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 2368
-  type: LoadBalancer
+  type: NodePort
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
