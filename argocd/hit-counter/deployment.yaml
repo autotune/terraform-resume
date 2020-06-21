@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
       - name: hit-counter
-        image: gcr.io/badamscka/hit-counter:14
+        image: gcr.io/badamscka/hit-counter:27
         ports:
         - containerPort: 80
         volumeMounts:
