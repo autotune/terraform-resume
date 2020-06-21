@@ -6,9 +6,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: $APP_INSTANCE_NAME-prometheus-config
+  name: contrasting-org-prometheus-config
   labels:
-    app.kubernetes.io/name: $APP_INSTANCE_NAME
+    app.kubernetes.io/name: contrasting-org
     app.kubernetes.io/component: prometheus
 data:
   # If you'd like to add your own alerts or modify existing alerts, you can edit this ConfigMap value.
