@@ -10,6 +10,6 @@ spec:
   - http:
       paths:
       - backend:
-          serviceName: prometheus
+          serviceName: contrasting-org-prometheus
           servicePort: 9090
         path: /prometheus
