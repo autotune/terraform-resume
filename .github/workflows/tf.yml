@@ -33,7 +33,7 @@ jobs:
           # driven off profiles
           pip3 install --upgrade pip setuptools
           pip3 install ansible-vault
-          echo "${{ secrets.SERVICEACCOUNT }}" > secret.txt
+          echo "${{ secrets.SERVICE_ACCOUNT }}" > secret.txt
           ansible-vault decrypt serviceaccount.json --vault-password-file secret.txt
           gcloud auth activate-service-account terraform@${{ secrets.GCP_PROJECT }}.iam.gserviceaccount.com --key-file=serviceaccount.json --project=${{ secrets.GCP_PROJECT }}
           sed "s/USER/${{ secrets.GCP_USER }}/g" -i kubernetes/argocd-perms.yaml
@@ -187,7 +187,7 @@ jobs:
           # driven off profiles
           pip3 install --upgrade pip setuptools
           pip3 install ansible-vault
-          echo "${{ secrets.SERVICEACCOUNT }}" > secret.txt
+          echo "${{ secrets.SERVICE_ACCOUNT }}" > secret.txt
           ansible-vault decrypt serviceaccount.json --vault-password-file secret.txt
           gcloud auth activate-service-account terraform@${{ secrets.GCP_PROJECT }}.iam.gserviceaccount.com --key-file=serviceaccount.json --project=${{ secrets.GCP_PROJECT }}
 
