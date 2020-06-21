@@ -1,14 +1,12 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: argocd
-  namespace: stage
+  name: stage
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: argocd
-  namespace: prod 
+  name: prod
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
