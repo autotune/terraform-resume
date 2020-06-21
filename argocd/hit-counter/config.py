@@ -1,5 +1,5 @@
 # Location of database
-DATABASE_FILENAME = './images/data.db'
+DATABASE_FILENAME = './db/data.db'
 # Amount of time before another view by the same user will count
 COOKIE_TIMEOUT = 60 * 5
 # Template of SVG with {count} to be provided
