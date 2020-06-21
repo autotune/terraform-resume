@@ -6,4 +6,4 @@ RUN apt-get update && apt-get install curl -y && apt-get install python3-pip -y 
 
 EXPOSE 80/tcp 
 
-CMD cd /srv && python3 server.py
+CMD cd /srv && gunicorn --bind 0.0.0.0:80 wsgi:app 
