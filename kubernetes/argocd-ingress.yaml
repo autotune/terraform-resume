@@ -26,7 +26,7 @@ spec:
   - hosts:
     - argocd.contrasting.org
     secretName: argocd-secret # do not change, this is provided by Argo CD
- ---
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
