@@ -39,7 +39,7 @@ metadata:
   namespace: prod
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    cert-manager.io/issuer: "letsencrypt-staging"
+    cert-manager.io/issuer: "letsencrypt-prod"
     external-dns.alpha.kubernetes.io/ttl: "60" #optional
     external-dns.alpha.kubernetes.io/hostname: contrasting.org
 spec:
@@ -53,5 +53,5 @@ spec:
           servicePort: 80
   tls:
   - hosts:
-    - stage.contrasting.org
-    secretName: stage-contrasting-org 
+    - contrasting.org
+    secretName: contrasting-org 
