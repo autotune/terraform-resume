@@ -7,9 +7,14 @@ metadata:
     ingress.kubernetes.io/rewrite-target: "/"
 spec:
   rules:
-  - http:
+  - host: prometheus.contrasting.org
+    http:
       paths:
       - backend:
           serviceName: contrasting-org-prometheus
           servicePort: 9090
         path: /prometheus
+  tls:
+  - hosts:
+    - prometheus.contrasting.org
+    secretName: contrasting-org 
