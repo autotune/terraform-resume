@@ -33,7 +33,7 @@ spec:
         - containerPort: 80
         volumeMounts:
         - name: hit-counter
-          mountPath: /srv/images
+          mountPath: /srv/db
       volumes:
       - name: hit-counter
         persistentVolumeClaim:
