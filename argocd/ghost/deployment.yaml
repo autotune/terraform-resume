@@ -1,25 +1,49 @@
-apiVersion: apps/v1beta1
-kind: Deployment
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
-  name: blog
+  name: cms-contrasting-org
   labels:
-    app: blog
+    app: cms-contrasting-org
+    org.rm3l.services.service_name: cms-contrasting-org
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: blog
+      app: cms-contrasting-org
+  serviceName: cms-contrasting-org
   template:
     metadata:
       labels:
-        app: blog
+        app: cms-contrasting-org
     spec:
+      volumes:
+      - name: cms-contrasting-org-ghost-root
+        persistentVolumeClaim:
+          claimName: cms-contrasting-org
+          readOnly: false
+
       containers:
-      - name: blog
-        image: ghost:2.6-alpine
-        imagePullPolicy: Always
+      - name: cms-contrasting-org
+        image: ghost:3.19.2-alpine
         ports:
-        - containerPort: 2368
-        env:
-        - name: url
-          value: https://blog.contrasting.org
+        - name: liveness-port
+          containerPort: 2368
+        startupProbe:
+          tcpSocket:
+            port: liveness-port
+          periodSeconds: 10
+          failureThreshold: 30
+        livenessProbe:
+          tcpSocket:
+            port: liveness-port
+          initialDelaySeconds: 30
+          periodSeconds: 90
+          timeoutSeconds: 60
+        readinessProbe:
+          tcpSocket:
+            port: liveness-port
+          initialDelaySeconds: 30
+          periodSeconds: 60
+        volumeMounts:
+          - name: cms-contrasting-org-ghost-root
+            mountPath: /var/lib/ghost/content
