@@ -12,7 +12,7 @@ spec:
       paths:
       - backend:
           serviceName: contrasting-org-prometheus
-          servicePort: 9090
+          servicePort: 80
         path: /prometheus
   tls:
   - hosts:
