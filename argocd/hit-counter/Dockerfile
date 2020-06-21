@@ -6,4 +6,4 @@ RUN apt-get update && apt-get install curl -y && apt-get install python3-pip -y 
 
 EXPOSE 80/tcp 
 
-CMD python3 /srv/server.py
+CMD cd /srv && python3 server.py
