@@ -2,7 +2,7 @@
 apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata:
-  name: letsencrypt-staging
+  name: letsencrypt-stage
 spec:
   acme:
     # The ACME server URL
@@ -11,7 +11,7 @@ spec:
     email: certs@contrasting.org
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
-      name: letsencrypt-staging
+      name: letsencrypt-stage
     # Enable the HTTP-01 challenge provider
     solvers:
     - http01:
