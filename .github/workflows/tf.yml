@@ -9,7 +9,7 @@ jobs:
   terraform:
     strategy:
       matrix:
-        workspace: [staging]
+        workspace: [terraform]
 
     name: ${{ matrix.workspace }}
     runs-on: ubuntu-latest
