@@ -101,18 +101,13 @@ jobs:
       - name: Install ArgoCD
         run: |
                 gcloud container clusters get-credentials resume --region=us-west1
-                if [[ $(kubectl get secret -nstage|grep clf|head -n1|awk '{print $1}') != "clf" ]];
+                if [[ $(kubectl get secret -nargocd|grep clf|head -n1|awk '{print $1}') != "clf" ]];
                 then
-                    kubectl create secret generic clf -nstage --from-literal=token=$( echo ${{ secrets.CLOUDFLARE_API_TOKEN }} ) --from-literal=email=$( echo ${{ secrets.CLOUDFLARE_EMAIL }} )
-                fi
-                
-                if [[ $(kubectl get secret -nprod|grep clf|head -n1|awk '{print $1}') != "clf" ]];
-                then
-                    kubectl create secret generic clf -nprod --from-literal=token=$( echo ${{ secrets.CLOUDFLARE_API_TOKEN }} ) --from-literal=email=$( echo ${{ secrets.CLOUDFLARE_EMAIL }} )
+                    kubectl create secret generic clf -nargocd --from-literal=token=$( echo ${{ secrets.CLOUDFLARE_API_TOKEN }} ) --from-literal=email=$( echo ${{ secrets.CLOUDFLARE_EMAIL }} )
                 fi
                 kubectl apply -f kubernetes/argocd-perms.yaml
-                kubectl apply -n prod -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-                kubectl apply -n stage -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+                # Can't have multiple namespaces here so we just have on argocd instance for simplicity sake
+                kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
                 kubectl apply -f kubernetes/
                 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
                 while [ "$(kubectl get svc argocd-server -nargocd|awk '{print $4}'|tail -1)" == "<pending>" ]; do
@@ -140,6 +135,12 @@ jobs:
               ~/argocd app set resume --sync-policy automated
           fi
           
+          if [[ $(~/argocd app get resume-stage -nstage|head -n1|awk '{print $1}') != "Name:" ]] 
+          then
+              ~/argocd app create resume-stage --repo https://github.com/autotune/terraform-resume.git --path argocd_stage/resume --dest-server https://kubernetes.default.svc --dest-namespace stage --revision=develop
+              ~/argocd app set resume-stage --sync-policy automated
+          fi
+
           if [[ $(~/argocd app get cert-manager|head -n1|awk '{print $1}') != "Name:" ]] 
           then
               ~/argocd app create cert-manager --repo https://github.com/autotune/terraform-resume.git --path argocd/cert-manager --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
