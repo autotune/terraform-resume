@@ -72,7 +72,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      containerPort: 2368
+      targetPort: 2368
   type: LoadBalancer
 ---
 apiVersion: extensions/v1beta1
