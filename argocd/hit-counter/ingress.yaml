@@ -13,3 +13,7 @@ spec:
         backend:
           serviceName: hit-counter
           servicePort: 80
+  tls:
+  - hosts:
+    - hitcounter.contrasting.org
+    secretName: contrasting-org 
