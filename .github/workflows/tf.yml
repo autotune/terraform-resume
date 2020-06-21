@@ -227,7 +227,6 @@ jobs:
         run: |
           gcloud auth configure-docker
           gcloud container clusters get-credentials resume --region=us-west1
-          sed "s/VERSION/$(cat version.txt)/g" -i argocd/resume/deployment.yaml
           if [[ $(cat argocd/resume/build_release.txt) == true ]];
           then
               docker build -t resume:$(cat ./docker_version.txt) argocd/resume 
