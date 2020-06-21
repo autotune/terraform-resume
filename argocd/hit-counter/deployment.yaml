@@ -60,7 +60,7 @@ metadata:
     cert-manager.io/issuer: "letsencrypt-prod"
 spec:
   rules:
-  - host: hitcounter.contrasting.org
+  - host: hitcounter2.contrasting.org
     http:
       paths:
       - backend:
@@ -68,5 +68,5 @@ spec:
           servicePort: 80
   tls:
   - hosts:
-    - hitcounter.contrasting.org
+    - hitcounter2.contrasting.org
     secretName: contrasting-org 
