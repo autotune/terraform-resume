@@ -158,6 +158,13 @@ jobs:
               ~/argocd app set ghost --sync-policy automated
           fi
           
+  
+          if [[ $(~/argocd app get monitoring|head -n1|awk '{print $1}') != "Name:" ]] 
+          then
+              ~/argocd app create monitoring --repo https://github.com/autotune/terraform-resume.git --path argocd/monitoring --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
+              ~/argocd app set monitoring --sync-policy automated
+          fi
+          
           if [[ $(kubectl get secret -ndefault|grep clf|head -n1|awk '{print $1}') != "clf" ]];
           then
               kubectl create secret generic clf -ndefault --from-literal=token=${{ secrets.CLOUDFLARE_API_TOKEN }} --from-literal=email=${{ secrets.CLOUDFLARE_EMAIL }}  
