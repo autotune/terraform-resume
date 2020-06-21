@@ -63,7 +63,7 @@ spec:
             mountPath: /var/lib/ghost/content
         env:
             - name: url
-              value: https://ghost.contrasting.org
+              value: https://blog.contrasting.org
 ---
 apiVersion: v1
 kind: Service
