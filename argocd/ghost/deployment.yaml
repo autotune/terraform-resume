@@ -61,3 +61,36 @@ spec:
         volumeMounts:
           - name: cms-contrasting-org-ghost-root
             mountPath: /var/lib/ghost/content
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blog
+spec:
+  selector:
+    app: cms-contrasting-org
+  ports:
+    - protocol: TCP
+      port: 80
+      containerPort: 2368
+  type: LoadBalancer
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: blog 
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/issuer: "letsencrypt-prod"
+spec:
+  rules:
+  - host: blog.contrasting.org
+    http:
+      paths:
+      - backend:
+          serviceName: blog
+          servicePort: 80
+  tls:
+  - hosts:
+    - blog.contrasting.org
+    secretName: contrasting-org 
