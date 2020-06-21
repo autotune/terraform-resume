@@ -62,7 +62,8 @@ spec:
           - name: cms-contrasting-org-ghost-root
             mountPath: /var/lib/ghost/content
         env:
-            url: ghost.contrasting.org
+            -name: url
+            -value: ghost.contrasting.org
 ---
 apiVersion: v1
 kind: Service
