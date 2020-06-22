@@ -31,7 +31,7 @@ kind: Ingress
 metadata:
   name: monitoring
   annotations:
-    ingress.kubernetes.io/whitelist-source-range: 10.0.0.0/16 # change this range to admin IPs
+    # ingress.kubernetes.io/whitelist-source-range: 10.0.0.0/16 # change this range to admin IPs
     ingress.kubernetes.io/rewrite-target: "/"
 spec:
   rules:
