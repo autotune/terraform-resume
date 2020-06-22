@@ -44,6 +44,14 @@ All containers can be killed and will re-spawn immediately based on deployment s
 
 This environment creates one "resume" GKE cluster for cost savings, and then all manifests are sorted into two environments on the cluster: stage, prod. These environments are separated out by namespace, and then by git branch on GitHub. Ingress hosts are given the name $SERVICE-stage.example.com, and then $SERVICE.example.com, except for the apex (root) domain, which is the resume service accessed at "example.com." 
 
+##### XI. Logs
+
+Logs are treated as live streams to standard out and viewable within ArgoCD. 
+
+#### XII. Admin processes 
+
+Processes such as those related to importing dashboards in grafana are treated as one-off processes. 
+
 ## HIT-COUNTER
 
 Existing solution was used and converted to work with kubernetes.
