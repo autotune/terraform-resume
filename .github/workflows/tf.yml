@@ -105,7 +105,7 @@ jobs:
                 then
                     kubectl create secret generic clf -nargocd --from-literal=token=$( echo ${{ secrets.CLOUDFLARE_API_TOKEN }} ) --from-literal=email=$( echo ${{ secrets.CLOUDFLARE_EMAIL }} )
                 fi
-                if [[ $(kubectl get secret -ndefault|grep grafana_admin|head -n1|awk '{print $1}') != "clf" ]];
+                if [[ $(kubectl get secret -ndefault|grep grafana|head -n1|awk '{print $1}') != "grafana" ]];
                 then
                     kubectl create secret generic grafana -ndefault --from-literal --from-literal=admin-user=admin --from-literal=admin-password=$( echo ${{ secrets.GRAFANA_ADMIN }} ) 
                 fi
