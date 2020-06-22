@@ -77,7 +77,16 @@ kubectl port-forward --namespace monitoring service/grafana 3000:8080
 
 ## SECURITY 
 
-All domains hosted with CloudFlare, which provides SSL and DDOS protection for free by default. GitHub Actions using encrypted ansible-vault secret to manage access to GCP. Changed "- --interval=30s" to "- --interval=300s" in external-dns args in order to work with CloudFlare.
+All domains hosted with CloudFlare, which provides SSL and DDOS protection for free by default. GitHub Actions using encrypted ansible-vault secret to manage access to GCP. Changed "- --interval=30s" to "- --interval=300s" in external-dns args in order to work with CloudFlare. GitHub Secrets:
+
+ARGOCD_ADMIN => argocd admin pass
+CLOUDFLARE_API_TOKEN => CloudFlare API TOKEN not Key
+CLOUDFLARE_EMAIL => CloudFlare Email
+GCP_PROJECT => GCP project
+GCP_STORAGE => GCP bucket
+GITHUBTOKEN => GitHub Personal Access Token
+GRAFANA_ADMIN => Grafana secret
+SERVICE_ACCOUNT => Password to decrypt your encrypted serviceaccount credentials 
 
 ## INFRASTRUCTURE AS CODE (IaC) 
 
