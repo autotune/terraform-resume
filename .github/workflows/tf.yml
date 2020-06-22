@@ -152,6 +152,12 @@ jobs:
               ~/argocd app create external-dns --repo https://github.com/autotune/terraform-resume.git --path argocd/external-dns --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
               ~/argocd app set external-dns --sync-policy automated
           fi
+ 
+          if [[ $(~/argocd app get hit-counter-stage -nstage|head -n1|awk '{print $1}') != "Name:" ]] 
+          then
+              ~/argocd app create hit-counter-stage --repo https://github.com/autotune/terraform-resume.git --path argocd_stage/hit-counter --dest-server https://kubernetes.default.svc --dest-namespace stage --revision=develop
+              ~/argocd app set hit-counter-stage --sync-policy automated
+          fi
 
           if [[ $(~/argocd app get hit-counter|head -n1|awk '{print $1}') != "Name:" ]] 
           then
