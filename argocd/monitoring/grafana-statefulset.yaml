@@ -60,12 +60,12 @@ spec:
             - name: GF_SECURITY_ADMIN_USER
               valueFrom:
                 secretKeyRef:
-                  name: contrasting-org-grafana
+                  name: grafana
                   key: admin-user
             - name: GF_SECURITY_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: contrasting-org-grafana
+                  name: grafana
                   key: admin-password
           # Define a liveness and readiness probe that will hit `/api/health` using port `3000`. 
           # To learn more about Liveness and Readiness Probes, 
