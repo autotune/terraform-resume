@@ -107,7 +107,7 @@ jobs:
                 fi
                 if [[ $(kubectl get secret -ndefault|grep grafana|head -n1|awk '{print $1}') != "grafana" ]];
                 then
-                    kubectl create secret generic grafana -ndefault --from-literal --from-literal=admin-user=admin --from-literal=admin-password=$( echo ${{ secrets.GRAFANA_ADMIN }} ) 
+                    kubectl create secret generic grafana -ndefault  --from-literal=admin-user=admin --from-literal=admin-password=$( echo ${{ secrets.GRAFANA_ADMIN }} ) 
                 fi
                 kubectl apply -f kubernetes/argocd-perms.yaml
                 # Can't have multiple namespaces here so we just have on argocd instance for simplicity sake
