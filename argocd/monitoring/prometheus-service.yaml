@@ -26,25 +26,25 @@ spec:
   selector:
     k8s-app: prometheus
 ---
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: monitoring
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-    cert-manager.io/issuer: "letsencrypt-prod"
-    ingress.kubernetes.io/whitelist-source-range: 10.0.0.0/16 # change this range to admin IPs
-    ingress.kubernetes.io/rewrite-target: "/"
-spec:
-  rules:
-  - host: prometheus.contrasting.org
-    http:
-      paths:
-      - backend:
-          serviceName: prometheus-main
-          servicePort: 80
-        path: /
-  tls:
-  - hosts:
-    - prometheus.contrasting.org
-    secretName: contrasting-org
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: monitoring
+#   annotations:
+#     kubernetes.io/ingress.class: "nginx"
+#     cert-manager.io/issuer: "letsencrypt-prod"
+#    ingress.kubernetes.io/whitelist-source-range: 10.0.0.0/16 # change this range to admin IPs
+#     ingress.kubernetes.io/rewrite-target: "/"
+# spec:
+#   rules:
+#   - host: prometheus.contrasting.org
+#     http:
+#       paths:
+#       - backend:
+#           serviceName: prometheus-main
+#           servicePort: 80
+#         path: /
+#  tls:
+#   - hosts:
+#     - prometheus.contrasting.org
+#     secretName: contrasting-org
