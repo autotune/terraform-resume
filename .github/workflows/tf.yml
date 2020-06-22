@@ -135,7 +135,7 @@ jobs:
               ~/argocd app set resume --sync-policy automated
           fi
           
-          if [[ $(~/argocd app get resume-stage -nstage|head -n1|awk '{print $1}') != "Name:" ]] 
+          if [[ $(~/argocd app get resume-stage|head -n1|awk '{print $1}') != "Name:" ]] 
           then
               ~/argocd app create resume-stage --repo https://github.com/autotune/terraform-resume.git --path argocd_stage/resume --dest-server https://kubernetes.default.svc --dest-namespace stage --revision=develop
               ~/argocd app set resume-stage --sync-policy automated
