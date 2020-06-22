@@ -9,13 +9,19 @@ metadata:
 spec:
   ports:
     # Exposes `http` and `TCP` ports `9090` using the default `ClusterIP` Service type
-    - name: http
-      port: 80
-      protocol: TCP
-      targetPort: 9090
-  # Ensures clients are routed to the same Prometheus Pod, which is necessary to get consistent dashboards in a highly-available setup. 
-  # To learn more about Prometheus high availability, 
-  # consult https://github.com/coreos/prometheus-operator/blob/master/Documentation/high-availability.md#prometheus
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-main
+spec:
+  type: ClusterIP
+  ports:
+  - name: web
+    port: 9090
+    protocol: TCP
+    targetPort: web
+  selector:
+    prometheus: main
   sessionAffinity: ClientIP
   selector:
     k8s-app: prometheus
