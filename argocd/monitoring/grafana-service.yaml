@@ -1,37 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: contrasting-org-grafana
+  name: grafana
+  namespace: monitoring
   labels:
-    k8s-app: grafana
-    app.kubernetes.io/name: contrasting-org
-    app.kubernetes.io/component: grafana
+    app: grafana
+    component: core
 spec:
+  type: NodePort
   ports:
-    # Routes port 80 to port 3000 of the Grafana StatefulSet Pods
-    - name: http
-      port: 80
-      protocol: TCP
-      targetPort: 3000
+    - port: 3000
   selector:
-    k8s-app: grafana
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: grafana 
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-    cert-manager.io/issuer: "letsencrypt-prod"
-spec:
-  rules:
-  - host: grafana.contrasting.org
-    http:
-      paths:
-      - backend:
-          serviceName: contrasting-org-grafana
-          servicePort: 80
-  tls:
-  - hosts:
-    - grafana.contrasting.org
-    secretName: contrasting-org 
+    app: grafana
+    component: core
