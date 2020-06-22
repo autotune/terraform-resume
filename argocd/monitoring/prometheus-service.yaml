@@ -43,6 +43,6 @@ spec:
           servicePort: 9090
         path: /
    tls:
-  - hosts:
-    - prometheus.contrasting.org
+   - hosts:
+     - prometheus.contrasting.org
     secretName: contrasting-org
