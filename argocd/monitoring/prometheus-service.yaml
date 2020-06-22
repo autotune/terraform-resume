@@ -14,7 +14,7 @@ kind: Service
 metadata:
   name: prometheus-main
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
   - name: web
     port: 9090
