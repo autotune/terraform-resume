@@ -40,7 +40,7 @@ spec:
       paths:
       - backend:
           serviceName: prometheus-main
-          servicePort: 9090
+          servicePort: 80
         path: /
   tls:
   - hosts:
