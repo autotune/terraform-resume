@@ -36,7 +36,7 @@ metadata:
 spec:
   rules:
   - host: prometheus.contrasting.org
-  - http:
+    http:
       paths:
       - backend:
           serviceName: prometheus-main
