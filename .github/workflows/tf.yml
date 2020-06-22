@@ -1,0 +1,258 @@
+name: terraform
+
+on: pull_request
+
+env:
+  TF_VERSION: 0.12.26
+
+jobs:
+  terraform:
+    strategy:
+      matrix:
+        workspace: [staging]
+
+    name: ${{ matrix.workspace }}
+    runs-on: ubuntu-latest
+
+    env:
+      WORKSPACE: ${{ matrix.workspace }}
+
+    steps:
+      - name: Generate tfvars Path 
+        id: tfvars
+        run: |
+            echo "::set-output name=tfvars_file::tfvars/${WORKSPACE}.tfvars"
+      - name: Checkout
+        uses: actions/checkout@1.0.0
+        with:
+          submodules: 'false'
+
+      - name: Setup GCP Credentials
+        run: |
+          # Setup the credentials in the workspace because everything in terraform is
+          # driven off profiles
+          pip3 install --upgrade pip setuptools
+          pip3 install ansible-vault
+          echo "${{ secrets.SERVICE_ACCOUNT }}" > secret.txt
+          ansible-vault decrypt serviceaccount.json --vault-password-file secret.txt
+          gcloud auth activate-service-account terraform@${{ secrets.GCP_PROJECT }}.iam.gserviceaccount.com --key-file=serviceaccount.json --project=${{ secrets.GCP_PROJECT }}
+          sed "s/USER/${{ secrets.GCP_USER }}/g" -i kubernetes/argocd-perms.yaml
+          sed "s/PROJECT/${{ secrets.GCP_PROJECT }}/g" -i kubernetes/argocd-perms.yaml
+
+      - name: Terraform Format
+        uses: autotune/terraform-github-actions@master
+        with:
+          tf_actions_version: ${{ env.TF_VERSION }}
+          tf_actions_subcommand: fmt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
+
+      - name: Terraform Init
+        uses: autotune/terraform-github-actions@master
+        with:
+          tf_actions_version: ${{ env.TF_VERSION }}
+          tf_actions_subcommand: init
+          args: --backend-config=backend/backend.tf -backend-config backend/backend.tfvars
+        env:
+          TF_WORKSPACE: ${{ env.WORKSPACE }}
+          TF_project: ${{ secrets.GCP_PROJECT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
+
+      - name: Terraform Validate
+        uses: autotune/terraform-github-actions@master
+        with:
+          tf_actions_version: ${{ env.TF_VERSION }}
+          tf_actions_subcommand: validate
+        env:
+          TF_WORKSPACE: ${{ env.WORKSPACE }}
+          GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
+          TF_project: ${{ secrets.GCP_PROJECT }}
+
+      - name: Terraform Plan
+        id: terraform-plan
+        uses: autotune/terraform-github-actions@master
+        with:
+          tf_actions_version: ${{ env.TF_VERSION }}
+          tf_actions_subcommand: plan
+          args: -var-file backend/backend.tfvars -var-file ${{ steps.tfvars.outputs.tfvars_file }}
+        env:
+          TF_WORKSPACE: ${{ env.WORKSPACE }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GOOGLE_APPLICATION_CREDENTIALS: "serviceaccount.json"
+          TF_cf_email: ${{ secrets.CLOUDFLARE_EMAIL }}
+          TF_cf_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_project: ${{ secrets.GCP_PROJECT }}
+
+      - name: Terraform Apply
+        id: terraform-apply
+        uses: autotune/terraform-github-actions@master
+        with:
+          tf_actions_version: ${{ env.TF_VERSION }}
+          tf_actions_subcommand: apply
+          args: -var-file backend/backend.tfvars -var-file ${{ steps.tfvars.outputs.tfvars_file }}
+        env:
+          TF_WORKSPACE: ${{ env.WORKSPACE }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GOOGLE_APPLICATION_CREDENTIALS: "serviceaccount.json"
+          TF_cf_email: ${{ secrets.CLOUDFLARE_EMAIL }}
+          TF_cf_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          TF_project: ${{ secrets.GCP_PROJECT }}
+
+      - name: Install ArgoCD
+        run: |
+                gcloud container clusters get-credentials resume --region=us-west1
+                if [[ $(kubectl get secret -nargocd|grep clf|head -n1|awk '{print $1}') != "clf" ]];
+                then
+                    kubectl create secret generic clf -nargocd --from-literal=token=$( echo ${{ secrets.CLOUDFLARE_API_TOKEN }} ) --from-literal=email=$( echo ${{ secrets.CLOUDFLARE_EMAIL }} )
+                fi
+                if [[ $(kubectl get secret -ndefault|grep grafana|head -n1|awk '{print $1}') != "grafana" ]];
+                then
+                    kubectl create secret generic grafana -ndefault  --from-literal=admin-user=admin --from-literal=admin-password=$( echo ${{ secrets.GRAFANA_ADMIN }} ) 
+                fi
+                kubectl apply -f kubernetes/argocd-perms.yaml
+                # Can't have multiple namespaces here so we just have on argocd instance for simplicity sake
+                kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+                kubectl apply -f kubernetes/
+                kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+                while [ "$(kubectl get svc argocd-server -nargocd|awk '{print $4}'|tail -1)" == "<pending>" ]; do
+                    echo -n '.';
+                    sleep 1;
+                done
+
+      - name: Install argocd cli and change argocd password
+        run: |
+         VERSION=$(curl --silent "https://api.github.com/repos/argoproj/argo-cd/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+         curl -SL -o ~/argocd https://github.com/argoproj/argo-cd/releases/download/$VERSION/argocd-linux-amd64
+         chmod +x ~/argocd
+         if [[ "$(argocd login $(kubectl get svc argocd-server -nargocd|awk '{print $4}'|tail -1) --username=admin --password=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2) --insecure 2>&1)|awk '{print $4}'" == "successfully" ]];
+         then
+             ~/argocd account update-password --account=admin --current-password=$(kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2) --new-password=${{ secrets.ARGOCD_ADMIN }}
+         else
+             ~/argocd login "$(kubectl get svc argocd-server -nargocd|awk '{print $4}'|tail -1)" --username=admin --password="${{ secrets.ARGOCD_ADMIN }}" --insecure
+         fi
+         
+      - name: Configure ArgoCD services
+        run: |
+          if [[ $(~/argocd app get resume|head -n1|awk '{print $1}') != "Name:" ]] 
+          then
+              ~/argocd app create resume --repo https://github.com/autotune/terraform-resume.git --path argocd/resume --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
+              ~/argocd app set resume --sync-policy automated
+          fi
+          
+          if [[ $(~/argocd app get resume-stage|head -n1|awk '{print $1}') != "Name:" ]] 
+          then
+              ~/argocd app create resume-stage --repo https://github.com/autotune/terraform-resume.git --path argocd_stage/resume --dest-server https://kubernetes.default.svc --dest-namespace stage --revision=develop
+              ~/argocd app set resume-stage --sync-policy automated
+          fi
+
+          if [[ $(~/argocd app get cert-manager|head -n1|awk '{print $1}') != "Name:" ]] 
+          then
+              ~/argocd app create cert-manager --repo https://github.com/autotune/terraform-resume.git --path argocd/cert-manager --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
+              ~/argocd app set cert-manager --sync-policy automated
+          fi
+          
+          if [[ $(~/argocd app get external-dns|head -n1|awk '{print $1}') != "Name:" ]] 
+          then
+              ~/argocd app create external-dns --repo https://github.com/autotune/terraform-resume.git --path argocd/external-dns --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
+              ~/argocd app set external-dns --sync-policy automated
+          fi
+ 
+          if [[ $(~/argocd app get hit-counter-stage|head -n1|awk '{print $1}') != "Name:" ]] 
+          then
+              ~/argocd app create hit-counter-stage --repo https://github.com/autotune/terraform-resume.git --path argocd_stage/hit-counter --dest-server https://kubernetes.default.svc --dest-namespace stage --revision=develop
+              ~/argocd app set hit-counter-stage --sync-policy automated
+          fi
+
+          if [[ $(~/argocd app get hit-counter|head -n1|awk '{print $1}') != "Name:" ]] 
+          then
+              ~/argocd app create hit-counter --repo https://github.com/autotune/terraform-resume.git --path argocd/hit-counter --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
+              ~/argocd app set hit-counter --sync-policy automated
+          fi
+
+          if [[ $(~/argocd app get ghost|head -n1|awk '{print $1}') != "Name:" ]] 
+          then
+              ~/argocd app create ghost --repo https://github.com/autotune/terraform-resume.git --path argocd/ghost --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
+              ~/argocd app set ghost --sync-policy automated
+          fi
+          
+  
+          if [[ $(~/argocd app get monitoring|head -n1|awk '{print $1}') != "Name:" ]] 
+          then
+              ~/argocd app create monitoring --repo https://github.com/autotune/terraform-resume.git --path argocd/monitoring --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
+              ~/argocd app set monitoring --sync-policy automated
+          fi
+          
+          if [[ $(kubectl get secret -ndefault|grep clf|head -n1|awk '{print $1}') != "clf" ]];
+          then
+              kubectl create secret generic clf -ndefault --from-literal=token=${{ secrets.CLOUDFLARE_API_TOKEN }} --from-literal=email=${{ secrets.CLOUDFLARE_EMAIL }}  
+          fi
+
+  docker:
+    strategy:
+      matrix:
+        workspace: [docker]
+
+    
+    name: ${{ matrix.workspace }}
+    runs-on: ubuntu-latest
+
+    env:
+      WORKSPACE: ${{ matrix.workspace }}
+
+    steps:     
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: 'false'
+      
+      - name: Setup GCP Credentials
+        run: |
+          # Setup the credentials in the workspace because everything in terraform is
+          # driven off profiles
+          pip3 install --upgrade pip setuptools
+          pip3 install ansible-vault
+          echo "${{ secrets.SERVICE_ACCOUNT }}" > secret.txt
+          ansible-vault decrypt serviceaccount.json --vault-password-file secret.txt
+          gcloud auth activate-service-account terraform@${{ secrets.GCP_PROJECT }}.iam.gserviceaccount.com --key-file=serviceaccount.json --project=${{ secrets.GCP_PROJECT }}
+
+      - name: Download artifacts to current dir 
+        run: |
+          gsutil cp gs://${{ secrets.GCP_STORAGE }}/* ./
+
+          if [[ ! -f "docker_version.txt" ]]; 
+          then
+              echo 0 > docker_version.txt
+          fi          
+          
+      - name: Set docker version
+        run: |
+          # driven off profiles
+          if [[ ! -f "docker_version.txt" ]]; 
+          then
+              echo 0 > docker_version.txt
+          fi
+
+          version=$(($(cat docker_version.txt) + 1))
+          echo $version > ./docker_version.txt
+          echo "IMAGE VERSION: $(cat docker_version.txt)"
+
+      - name: Upload docker version to GitHub Actions  
+        run: |
+          gsutil cp docker_version.txt gs://${{ secrets.GCP_STORAGE }}
+
+      - name: Build docker image and push 
+        run: |
+          gcloud auth configure-docker
+          gcloud container clusters get-credentials resume --region=us-west1
+          if [[ $(cat argocd/resume/build_release.txt) == true ]];
+          then
+              docker build -t resume:$(cat ./docker_version.txt) argocd/resume 
+              docker tag resume:$(cat ./docker_version.txt) gcr.io/${{ secrets.GCP_PROJECT }}/resume:$(cat ./docker_version.txt)
+              docker push gcr.io/${{ secrets.GCP_PROJECT }}/resume:$(cat ./docker_version.txt)
+          fi
+          if [[ $(cat argocd/hit-counter/build_release.txt) == true ]];
+          then
+              docker build -t hit-counter:$(cat ./docker_version.txt) argocd/hit-counter
+              docker tag hit-counter:$(cat ./docker_version.txt) gcr.io/${{ secrets.GCP_PROJECT }}/hit-counter:$(cat ./docker_version.txt)
+              docker push gcr.io/${{ secrets.GCP_PROJECT }}/hit-counter:$(cat ./docker_version.txt)
+          fi
