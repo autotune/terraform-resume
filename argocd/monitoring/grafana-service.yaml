@@ -15,3 +15,23 @@ spec:
       targetPort: 3000
   selector:
     k8s-app: grafana
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: grafana 
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/issuer: "letsencrypt-prod"
+spec:
+  rules:
+  - host: grafana.contrasting.org
+    http:
+      paths:
+      - backend:
+          serviceName: contrasting-org-grafana
+          servicePort: 80
+  tls:
+  - hosts:
+    - grafana.contrasting.org
+    secretName: contrasting-org 
