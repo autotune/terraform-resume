@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: argocd-server-ingress
-  namespace: prod
+  namespace: argocd 
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
@@ -15,7 +15,7 @@ metadata:
     external-dns.alpha.kubernetes.io/ttl: "120"
 spec:
   rules:
-  - host: argocd.contrasting.org
+  - host: argocd2.contrasting.org
     http:
       paths:
       - backend:
@@ -24,7 +24,7 @@ spec:
         path: /
   tls:
   - hosts:
-    - argocd.contrasting.org
+    - argocd2.contrasting.org
     secretName: argocd-secret # do not change, this is provided by Argo CD
 ---
 apiVersion: extensions/v1beta1
