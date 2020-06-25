@@ -7,7 +7,7 @@ metadata:
     app: cms-contrasting-org
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
