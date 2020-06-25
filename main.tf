@@ -126,7 +126,7 @@ resource "google_filestore_instance" "instance" {
   name    = "contrasting-org-cms-ghost"
   zone    = "us-west1-a"
   tier    = "PREMIUM"
-  project = "badamscka" 
+  project = "badamscka"
 
   file_shares {
     capacity_gb = 5
