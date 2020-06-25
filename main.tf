@@ -123,9 +123,10 @@ module "gke" {
 }
 
 resource "google_filestore_instance" "instance" {
-  name = "test-instance"
-  zone = "us-west1-a"
-  tier = "PREMIUM"
+  name    = "contrasting-org-cms-ghost"
+  zone    = "us-west1-a"
+  tier    = "PREMIUM"
+  project = "badamscka" 
 
   file_shares {
     capacity_gb = 5
