@@ -122,6 +122,7 @@ module "gke" {
   }
 }
 
+/*
 resource "google_filestore_instance" "instance" {
   name    = "contrasting-org-cms-ghost"
   zone    = "us-west1-a"
@@ -138,3 +139,4 @@ resource "google_filestore_instance" "instance" {
     modes   = ["MODE_IPV4"]
   }
 }
+*/

@@ -20,7 +20,7 @@ metadata:
     app: cms-contrasting-org
     org.rm3l.services.service_name: cms-contrasting-org
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: cms-contrasting-org
