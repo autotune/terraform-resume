@@ -1,10 +1,3 @@
-provider "cloudflare" {
-  version = "~> 2.0"
-  email   = var.cf_email
-  api_key = var.cf_api_key
-}
-
-
 module "vpc" {
   source  = "terraform-google-modules/network/google"
   version = "~> 2.3"
@@ -129,6 +122,18 @@ module "gke" {
   }
 }
 
-provider "kubernetes" {
-  config_context_cluster = "${module.gke.name}"
+resource "google_filestore_instance" "instance" {
+  name = "test-instance"
+  zone = "us-west1-a"
+  tier = "PREMIUM"
+
+  file_shares {
+    capacity_gb = 5
+    name        = "ghost"
+  }
+
+  networks {
+    network = "default"
+    modes   = ["MODE_IPV4"]
+  }
 }
