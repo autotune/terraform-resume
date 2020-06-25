@@ -171,10 +171,9 @@ jobs:
 
           if [[ $(~/argocd app get ghost|head -n1|awk '{print $1}') != "Name:" ]] 
           then
-              ~/argocd app create ghost --repo https://github.com/autotune/terraform-resume.git --path argocd/ghost --dest-server https://kubernetes.default.svc --dest-namespace default --revision=prod
+              ~/argocd app create ghost --repo https://github.com/autotune/terraform-resume.git --path argocd/ghost --dest-server https://kubernetes.default.svc --dest-namespace prod --revision=prod
               ~/argocd app set ghost --sync-policy automated
           fi
-          
   
           if [[ $(~/argocd app get monitoring|head -n1|awk '{print $1}') != "Name:" ]] 
           then
