@@ -62,6 +62,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "nginx"
     cert-manager.io/issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - host: contrasting.org
