@@ -7,10 +7,10 @@ metadata:
     app: cms-contrasting-org
 spec:
   accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
+    - ReadWriteMany
+  nfs:
+    path: /ghost
+    server: 10.85.87.90
 ---
 apiVersion: apps/v1
 kind: StatefulSet
