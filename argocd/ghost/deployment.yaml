@@ -11,9 +11,6 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Recycle
   storageClassName: slow
-  mountOptions:
-    - hard
-    - nfsvers=4.1
   nfs:
     path: /ghost
     server: 10.38.218.170
