@@ -2,24 +2,24 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: cms-contrasting-org
+  name: blog-contrasting-org
   namespace: prod
   labels:
-    app: cms-contrasting-org
-    org.rm3l.services.service_name: cms-contrasting-org
+    app: blog-contrasting-org
+    org.rm3l.services.service_name: blog-contrasting-org
 spec:
   replicas: 3 
   selector:
     matchLabels:
-      app: cms-contrasting-org
-  serviceName: cms-contrasting-org
+      app: blog-contrasting-org
+  serviceName: blog-contrasting-org
   template:
     metadata:
       labels:
-        app: cms-contrasting-org
+        app: blog-contrasting-org
     spec:
       containers:
-      - name: cms-contrasting-org
+      - name: blog-contrasting-org
         image: gcr.io/badamscka/blog:0.1 
         ports:
         - name: liveness-port
@@ -47,11 +47,10 @@ metadata:
   name: blog
 spec:
   selector:
-    app: cms-contrasting-org
+    app: blog-contrasting-org
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 80
   type: NodePort
 ---
 apiVersion: extensions/v1beta1
