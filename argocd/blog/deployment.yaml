@@ -8,7 +8,7 @@ metadata:
     app: blog-contrasting-org
     org.rm3l.services.service_name: blog-contrasting-org
 spec:
-  replicas: 3
+  replicas: 10
   selector:
     matchLabels:
       app: blog-contrasting-org
