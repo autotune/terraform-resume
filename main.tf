@@ -135,7 +135,7 @@ resource "google_filestore_instance" "instance" {
   }
 
   networks {
-    network = "default"
+    network = "resume"
     modes   = ["MODE_IPV4"]
   }
 }
