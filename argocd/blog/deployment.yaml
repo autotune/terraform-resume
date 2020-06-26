@@ -44,7 +44,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: blog
+  name: blog-contrasting-org
   namespace: prod
 spec:
   selector:
@@ -68,7 +68,7 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: blog
+          serviceName: blog-contrasting-org
           servicePort: 80
   tls:
   - hosts:
