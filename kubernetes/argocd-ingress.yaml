@@ -24,7 +24,7 @@ spec:
         path: /
   tls:
   - hosts:
-    - argocd2.contrasting.org
+    - argocd.contrasting.org
     secretName: argocd-secret # do not change, this is provided by Argo CD
 ---
 apiVersion: extensions/v1beta1
