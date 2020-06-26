@@ -26,6 +26,9 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi
 ---
 apiVersion: apps/v1
 kind: StatefulSet
