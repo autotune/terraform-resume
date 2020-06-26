@@ -29,7 +29,7 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: "slow"
-  volumeName: "ghost"
+  volumeName: "cms"
   resources:
     requests:
       storage: 3Gi
