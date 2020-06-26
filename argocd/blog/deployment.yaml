@@ -64,7 +64,7 @@ metadata:
     cert-manager.io/issuer: "letsencrypt-prod"
 spec:
   rules:
-  - host: testblog.contrasting.org
+  - host: blog.contrasting.org
     http:
       paths:
       - backend:
@@ -72,5 +72,5 @@ spec:
           servicePort: 80
   tls:
   - hosts:
-    - testblog.contrasting.org
+    - blog.contrasting.org
     secretName: contrasting-org 
