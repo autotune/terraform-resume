@@ -12,10 +12,10 @@ metadata:
     # then you need to force the nginx ingress to connect to the backend using HTTPS.
     #
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    external-dns.alpha.kubernetes.io/ttl: "120"
+    external-dns.alpha.kubernetes.io/ttl: "1200"
 spec:
   rules:
-  - host: argocd2.contrasting.org
+  - host: argocd.contrasting.org
     http:
       paths:
       - backend:
