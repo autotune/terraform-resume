@@ -16,7 +16,7 @@ spec:
     - nfsvers=4.1
   nfs:
     path: /ghost
-    server: 10.85.87.90
+    server: 10.38.218.170
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -41,6 +41,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: cms-contrasting-org
+  namespace: prod
   labels:
     app: cms-contrasting-org
     org.rm3l.services.service_name: cms-contrasting-org
