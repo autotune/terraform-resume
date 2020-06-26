@@ -28,7 +28,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: ""
+  storageClassName: "slow"
   volumeName: "ghost"
   resources:
     requests:
