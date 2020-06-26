@@ -20,9 +20,9 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: cms-contrasting-org
+  name: ghost-contrasting-org
   labels:
-    app: cms-contrasting-org
+    app: ghost-contrasting-org
 spec:
   accessModes:
     - ReadWriteMany
@@ -51,7 +51,7 @@ spec:
       volumes:
       - name: cms-contrasting-org-ghost-root
         persistentVolumeClaim:
-          claimName: cms-contrasting-org
+          claimName: ghost-contrasting-org
           readOnly: false
 
       containers:
