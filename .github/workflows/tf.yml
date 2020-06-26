@@ -169,10 +169,10 @@ jobs:
               ~/argocd app set hit-counter --sync-policy automated
           fi
 
-          if [[ $(~/argocd app get ghost|head -n1|awk '{print $1}') != "Name:" ]] 
+          if [[ $(~/argocd app get blog|head -n1|awk '{print $1}') != "Name:" ]] 
           then
-              ~/argocd app create ghost --repo https://github.com/autotune/terraform-resume.git --path argocd/ghost --dest-server https://kubernetes.default.svc --dest-namespace prod --revision=prod
-              ~/argocd app set ghost --sync-policy automated
+              ~/argocd app create blog --repo https://github.com/autotune/terraform-resume.git --path argocd/blog --dest-server https://kubernetes.default.svc --dest-namespace prod --revision=prod
+              ~/argocd app set blog --sync-policy automated
           fi
   
           if [[ $(~/argocd app get monitoring|head -n1|awk '{print $1}') != "Name:" ]] 
