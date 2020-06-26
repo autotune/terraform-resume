@@ -121,22 +121,3 @@ module "gke" {
     ]
   }
 }
-
-
-resource "google_filestore_instance" "instance" {
-  name    = "contrasting-org-cms-ghost"
-  zone    = "us-west1-a"
-  tier    = "STANDARD"
-  project = "badamscka"
-
-  file_shares {
-    capacity_gb = 1024
-    name        = "ghost"
-  }
-
-  networks {
-    network = "resume"
-    modes   = ["MODE_IPV4"]
-  }
-}
-
