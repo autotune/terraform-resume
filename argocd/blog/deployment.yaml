@@ -68,7 +68,7 @@ spec:
     http:
       paths:
       - path: /blog
-      - backend:
+        backend:
           serviceName: blog-contrasting-org
           servicePort: 80
   tls:
