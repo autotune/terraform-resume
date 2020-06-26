@@ -43,7 +43,7 @@ metadata:
     app: cms-contrasting-org
     org.rm3l.services.service_name: cms-contrasting-org
 spec:
-  replicas: 1
+  replicas: 3 
   selector:
     matchLabels:
       app: cms-contrasting-org
@@ -61,7 +61,7 @@ spec:
 
       containers:
       - name: cms-contrasting-org
-        image: ghost:3.19.2-alpine
+        image: ghost:3.21
         ports:
         - name: liveness-port
           containerPort: 2368
