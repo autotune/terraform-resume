@@ -1,3 +1,21 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv0003
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: slow
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+  nfs:
+    path: /ghost
+    server: 10.85.87.90
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -8,9 +26,6 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  nfs:
-    path: /ghost
-    server: 10.85.87.90
 ---
 apiVersion: apps/v1
 kind: StatefulSet
