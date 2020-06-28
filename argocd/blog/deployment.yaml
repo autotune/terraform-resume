@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: blog-contrasting-org
-        image: gcr.io/badamscka/blog:0.4
+        image: gcr.io/badamscka/blog:0.5
         ports:
         - name: liveness-port
           containerPort: 80 
