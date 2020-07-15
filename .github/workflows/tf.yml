@@ -105,9 +105,9 @@ jobs:
                 then
                     kubectl create secret generic clf -nargocd --from-literal=token=$( echo ${{ secrets.CLOUDFLARE_API_TOKEN }} ) --from-literal=email=$( echo ${{ secrets.CLOUDFLARE_EMAIL }} )
                 fi
-                if [[ $(kubectl get secret -ndefault|grep grafana|head -n1|awk '{print $1}') != "grafana" ]];
+                if [[ $(kubectl get secret -nmonitoring|grep grafana|head -n1|awk '{print $1}') != "grafana" ]];
                 then
-                    kubectl create secret generic grafana -ndefault  --from-literal=admin-user=admin --from-literal=admin-password=$( echo ${{ secrets.GRAFANA_ADMIN }} ) 
+                    kubectl create secret generic grafana -nmonitoring  --from-literal=admin-user=admin --from-literal=admin-password=$( echo ${{ secrets.GRAFANA_ADMIN }} ) 
                 fi
                 kubectl apply -f kubernetes/argocd-perms.yaml
                 # Can't have multiple namespaces here so we just have on argocd instance for simplicity sake
@@ -135,7 +135,7 @@ jobs:
         run: |
           if [[ $(~/argocd app get resume|head -n1|awk '{print $1}') != "Name:" ]] 
           then
-              ~/argocd app create resume --repo https://github.com/autotune/terraform-resume.git --path argocd/resume --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
+              ~/argocd app create resume --repo https://github.com/autotune/terraform-resume.git --path argocd/resume --dest-server https://kubernetes.default.svc --dest-namespace default --revision=prod
               ~/argocd app set resume --sync-policy automated
           fi
           
@@ -147,13 +147,13 @@ jobs:
 
           if [[ $(~/argocd app get cert-manager|head -n1|awk '{print $1}') != "Name:" ]] 
           then
-              ~/argocd app create cert-manager --repo https://github.com/autotune/terraform-resume.git --path argocd/cert-manager --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
+              ~/argocd app create cert-manager --repo https://github.com/autotune/terraform-resume.git --path argocd/cert-manager --dest-server https://kubernetes.default.svc --dest-namespace default --revision=prod
               ~/argocd app set cert-manager --sync-policy automated
           fi
           
           if [[ $(~/argocd app get external-dns|head -n1|awk '{print $1}') != "Name:" ]] 
           then
-              ~/argocd app create external-dns --repo https://github.com/autotune/terraform-resume.git --path argocd/external-dns --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
+              ~/argocd app create external-dns --repo https://github.com/autotune/terraform-resume.git --path argocd/external-dns --dest-server https://kubernetes.default.svc --dest-namespace default --revision=prod
               ~/argocd app set external-dns --sync-policy automated
           fi
  
@@ -169,16 +169,15 @@ jobs:
               ~/argocd app set hit-counter --sync-policy automated
           fi
 
-          if [[ $(~/argocd app get ghost|head -n1|awk '{print $1}') != "Name:" ]] 
+          if [[ $(~/argocd app get blog|head -n1|awk '{print $1}') != "Name:" ]] 
           then
-              ~/argocd app create ghost --repo https://github.com/autotune/terraform-resume.git --path argocd/ghost --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
-              ~/argocd app set ghost --sync-policy automated
+              ~/argocd app create blog --repo https://github.com/autotune/terraform-resume.git --path argocd/blog --dest-server https://kubernetes.default.svc --dest-namespace prod --revision=prod
+              ~/argocd app set blog --sync-policy automated
           fi
-          
   
           if [[ $(~/argocd app get monitoring|head -n1|awk '{print $1}') != "Name:" ]] 
           then
-              ~/argocd app create monitoring --repo https://github.com/autotune/terraform-resume.git --path argocd/monitoring --dest-server https://kubernetes.default.svc --dest-namespace default --revision=develop
+              ~/argocd app create monitoring --repo https://github.com/autotune/terraform-resume.git --path argocd/monitoring --dest-server https://kubernetes.default.svc --dest-namespace default --revision=prod
               ~/argocd app set monitoring --sync-policy automated
           fi
           

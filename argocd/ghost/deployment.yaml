@@ -1,26 +1,49 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cms 
+  namespace: prod
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: slow
+  nfs:
+    path: /ghost
+    server: 10.38.218.170
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: cms-contrasting-org
+  namespace: prod
   labels:
     app: cms-contrasting-org
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
+  storageClassName: "slow"
+  volumeName: "cms"
   resources:
     requests:
-      storage: 1Gi
+      storage: 3Gi
+  selector: 
+    matchLabels: 
+      name: ghost
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: cms-contrasting-org
+  namespace: prod
   labels:
     app: cms-contrasting-org
     org.rm3l.services.service_name: cms-contrasting-org
 spec:
-  replicas: 3
+  replicas: 3 
   selector:
     matchLabels:
       app: cms-contrasting-org
@@ -38,7 +61,7 @@ spec:
 
       containers:
       - name: cms-contrasting-org
-        image: ghost:3.19.2-alpine
+        image: ghost:3.21
         ports:
         - name: liveness-port
           containerPort: 2368
